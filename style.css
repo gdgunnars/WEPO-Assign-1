@@ -55,11 +55,3 @@ ul li a {
 ul li a:hover {
     background-color: #111;
 }
-input { vertical-align: middle; margin-top: -1px;}
-/*
-input[type="radio"] {
-  margin-top: -1px;
-  vertical-align: middle;
-  height: 100%;
-}
-*/

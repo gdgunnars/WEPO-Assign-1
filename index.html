@@ -17,15 +17,18 @@
 		<canvas id="mainCanvas" width="800px" height="600px"></canvas>
 	</div>
 	<div class="container-right">
-		<input type="radio" name="shape" id="rect" checked="checked" value="rectangle">
+		<input type="radio" name="shape" id="rect" checked="checked" value="Rectangle">
 		<label for="rect"> Rectangle </label><br>
-		<input type="radio" name="shape" id="circle" value="circle">
+		<input type="radio" name="shape" id="circle" value="Pen">
+		<label for="circle"> Pen </label><br>
+		<input type="radio" name="shape" id="circle" value="Circle">
 		<label for="circle"> Circle </label><br>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="shape.js"></script>
 	<script type="text/javascript">
 		$('input[type=radio][name=shape]').on('change', function() {
+			console.log("hello world");
 			switch($(this).val()) {
 				case 'Rectangle':
 					console.log("Set shape to rectangle");
@@ -34,6 +37,10 @@
 				case 'Pen':
 					console.log("Set shape to Pen");
 					setShape("Pen");
+					break;
+				case 'Circle':
+					console.log("Set shape to Circle");
+					setShape("Circle");
 					break;
 			}
 		});
