@@ -21,7 +21,7 @@ class Circle extends Shape {
 
     draw(context) {
         context.beginPath();
-        context.arc(this.x,this.y,50,2*Math.PI);
+        context.arc(this.x,this.y,50,0,2*Math.PI);
         context.stroke();
     }
 }
@@ -115,7 +115,7 @@ class Text {
 
 var settings = {
     canvasObj: document.getElementById("mainCanvas"),
-    nextShape: "Pen",
+    nextShape: "Circle",
     nextColor: "#000",
     isDrawing: false,
     currentShape: undefined,
@@ -183,6 +183,10 @@ $("#mainCanvas").on("mousemove", function(e) {
         settings.currentShape.draw(context);
     }
 });
+
+function setShape(shape) {
+    settings.nextShape = shape;
+}
 
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
