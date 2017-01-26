@@ -87,6 +87,12 @@ var settings = {
     shapes: []
 };
 
+
+function getRelativeCoords(event) {
+    return { x: event.offsetX || event.layerX, y: event.offsetY || event.layerY };
+}
+
+
 $("#mainCanvas").on("mousedown", function(e) {
     console.log("Mouse down");
     settings.isDrawing = true;
@@ -95,8 +101,9 @@ $("#mainCanvas").on("mousedown", function(e) {
     var context = settings.canvasObj.getContext("2d");
     var rect = settings.canvasObj.getBoundingClientRect();
 
-    var x = e.pageX - this.offsetLeft;
-    var y = e.pageY - this.offsetTop;
+    var c = getRelativeCoords(e);
+    var x = c.x;
+    var y = c.y;
 
     if (settings.nextShape === "Circle") {
         shape = new Circle(x, y, settings.nextColor);
