@@ -1,5 +1,3 @@
-
-
 var settings = {
     canvasObj: document.getElementById("mainCanvas"),
     nextShape: "Pen",
@@ -32,6 +30,7 @@ $(document).ready(function() {
     });
 });
 
+
 $('input[type=radio][name=shape]').on('change', function() {
     switch($(this).val()) {
         case 'Rectangle':
@@ -46,12 +45,18 @@ $('input[type=radio][name=shape]').on('change', function() {
             console.log("Set shape to Circle");
             setShape("Circle");
             break;
+        case 'Line':
+            console.log("Set shape to Line");
+            setShape("Line");
+            break;
     }
 });
 
+
 $('#button_clear').on('click', function() {
     clearCanvas();
-})
+});
+
 
 $("#colorpicker").spectrum({
     color: settings.nextColor,
@@ -101,10 +106,7 @@ $("#colorpicker").spectrum({
 });
 
 
-
-
 $("#mainCanvas").on("mousedown", function(e) {
-    console.log("Mouse down");
     e.preventDefault();
     settings.isDrawing = true;
 
@@ -137,6 +139,7 @@ $("#mainCanvas").on("mousedown", function(e) {
     shape.draw(context);
 });
 
+
 $("#mainCanvas").on("mousemove", function(e) {
     var context = settings.canvasObj.getContext("2d");
     var rect = settings.canvasObj.getBoundingClientRect();
@@ -146,7 +149,6 @@ $("#mainCanvas").on("mousemove", function(e) {
     var y = c.y;
 
     if (settings.currentShape !== undefined) {
-        console.log("Mouse down and moved");
         // TODO: update the end pos of current shape
         settings.currentShape.setEnd(x, y);
 
@@ -156,9 +158,7 @@ $("#mainCanvas").on("mousemove", function(e) {
 });
 
 
-
 $("#mainCanvas").on("mouseup", function(e) {
-    console.log("Mouse up");
     var context = settings.canvasObj.getContext("2d");
     var rect = settings.canvasObj.getBoundingClientRect();
 
@@ -175,21 +175,26 @@ $("#mainCanvas").on("mouseup", function(e) {
     settings.currentShape = undefined;
 });
 
+
 function getRelativeCoords(event) {
     return { x: event.offsetX || event.layerX, y: event.offsetY || event.layerY };
 }
+
 
 function setShape(shape) {
     settings.nextShape = shape;
 }
 
+
 function setWidth(lwidth) {
     settings.lineWidth = lwidth;
 }
 
+
 function setColor(color) {
     settings.nextColor = color;
 }
+
 
 function clearCanvas() {
     settings.shapes = [];
