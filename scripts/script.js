@@ -34,7 +34,7 @@ $(document).ready(function() {
 $('input[type=radio][name=shape]').on('change', function() {
     switch($(this).val()) {
         case 'Rectangle':
-            console.log("Set shape to rectangle");
+            console.log("Set shape to Rectangle");
             setShape("Rectangle");
             break;
         case 'Pen':
@@ -48,6 +48,10 @@ $('input[type=radio][name=shape]').on('change', function() {
         case 'Line':
             console.log("Set shape to Line");
             setShape("Line");
+            break;
+        case 'SprayCan':
+            console.log("Set shape to SprayCan");
+            setShape("SprayCan");
             break;
     }
 });
@@ -132,6 +136,9 @@ $("#mainCanvas").on("mousedown", function(e) {
     }
     else if (settings.nextShape === "Text") {
         shape = new Text(x, y, settings.nextColor);
+    }
+    else if (settings.nextShape === "SprayCan") {
+        shape = new SprayCan(x, y, settings.nextColor, settings.lineWidth);
     }
 
     settings.currentShape = shape;

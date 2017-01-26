@@ -4,10 +4,13 @@ class Rectangle extends Shape {
     }
 
     draw(context) {
+        context.lineWidth = this.lineWidth;
+        context.strokeStyle = this.color;
         var height = this.endX - this.x;
         var width = this.endY - this.y;
 
-        context.fillStyle = this.color;
-        context.fillRect(this.x, this.y, height, width);
+        //context.fillStyle = this.color;
+        context.rect(this.x, this.y, height, width);
+        context.stroke();
     }
 }
