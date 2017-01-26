@@ -32,6 +32,7 @@ $('input[type=radio][name=shape]').on('change', function() {
 
 $("#mainCanvas").on("mousedown", function(e) {
     console.log("Mouse down");
+    e.preventDefault();
     settings.isDrawing = true;
 
     var shape = undefined;
