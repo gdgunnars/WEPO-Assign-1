@@ -32,10 +32,11 @@ class Rectangle extends Shape {
     }
 
     draw(context) {
-        //context.fillStyle = this.color;
-        //context.fillRect(this.x, this.y, 200, 200);
-        context.fillRect(this.x, this.y, 40, 40);
-        console.log(this.x, this.y);
+        var height = this.endX - this.x;
+        var width = this.endY - this.y;
+
+        context.fillStyle = this.color;
+        context.fillRect(this.x, this.y, height, width);
     }
 }
 
@@ -77,14 +78,15 @@ class Text extends Shape {
     }
 }
 
-
 var settings = {
     canvasObj: document.getElementById("mainCanvas"),
     nextShape: "Rectangle",
-    nextColor: "Black",
+    nextColor: "#000",
     isDrawing: false,
     currentShape: undefined,
-    shapes: []
+    shapes: [],
+    canvasWidth: 800,
+    canvasHeight: 600
 };
 
 
@@ -131,8 +133,9 @@ $("#mainCanvas").on("mousemove", function(e) {
     var context = settings.canvasObj.getContext("2d");
     var rect = settings.canvasObj.getBoundingClientRect();
 
-    var x = e.clientX-rect.left;
-    var y = e.clientY-rect.top;
+    var c = getRelativeCoords(e);
+    var x = c.x;
+    var y = c.y;
 
     if (settings.currentShape !== undefined) {
         console.log("Mouse down and moved");
@@ -140,16 +143,22 @@ $("#mainCanvas").on("mousemove", function(e) {
         settings.currentShape.setEnd(x, y);
 
         drawAll();
+        settings.currentShape.draw(context);
     }
 });
 
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
-    context.fillStyle="#FFF";
-    context.fillRect(0, 0, 800, 600);
+
     // TODO: clear the canvasObj
+    context.fillStyle = "#FFF";
+    context.fillRect(0, 0, settings.canvasWidth, settings.canvasHeight);
+
 
     // TODO: draw all the objects
+    for (var i = 0; i < settings.shapes.length; i++) {
+        settings.shapes[i].draw(context);
+    }
 }
 
 $("#mainCanvas").on("mouseup", function(e) {
@@ -157,17 +166,14 @@ $("#mainCanvas").on("mouseup", function(e) {
     var context = settings.canvasObj.getContext("2d");
     var rect = settings.canvasObj.getBoundingClientRect();
 
-    var x = e.clientX-rect.left;
-    var y = e.clientY-rect.top;
+    var c = getRelativeCoords(e);
+    var x = c.x;
+    var y = c.y;
 
     if (settings.currentShape !== undefined) {
         settings.currentShape.setEnd(x, y);
+        settings.shapes.push(settings.currentShape);
     }
 
     settings.currentShape = undefined;
 });
-/*
-var context = settings.canvasObj.getContext("2d");
-var c = new Rectangle(200, 200, "black");
-c.draw(context);
-*/
