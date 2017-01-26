@@ -49,6 +49,10 @@ $('input[type=radio][name=shape]').on('change', function() {
     }
 });
 
+$('#button_clear').on('click', function() {
+    clearCanvas();
+})
+
 
 
 
@@ -140,14 +144,16 @@ function setColor(color) {
     settings.nextColor = color;
 }
 
+function clearCanvas() {
+    settings.shapes = [];
+    var context = settings.canvasObj.getContext("2d");
+    context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
+}
+
 
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
-
-    // TODO: clear the canvasObj
     context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
-
-    // TODO: draw all the objects
     for (var i = 0; i < settings.shapes.length; i++) {
         settings.shapes[i].draw(context);
     }
