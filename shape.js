@@ -80,7 +80,7 @@ class Text extends Shape {
 
 var settings = {
     canvasObj: document.getElementById("mainCanvas"),
-    nextShape: "Rectangle",
+    nextShape: "Pen",
     nextColor: "#000",
     isDrawing: false,
     currentShape: undefined,
@@ -124,7 +124,6 @@ $("#mainCanvas").on("mousedown", function(e) {
     }
 
     settings.currentShape = shape;
-    settings.shapes.push(shape);
 
     shape.draw(context);
 });
@@ -173,6 +172,7 @@ $("#mainCanvas").on("mouseup", function(e) {
     if (settings.currentShape !== undefined) {
         settings.currentShape.setEnd(x, y);
         settings.shapes.push(settings.currentShape);
+        console.log(settings.shapes);
     }
 
     settings.currentShape = undefined;
