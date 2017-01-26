@@ -1,14 +1,13 @@
 class Shape {
-    constructor() {
-
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
     }
 }
 
 class Circle extends Shape {
-    constructor(x, y) {
+    constructor() {
         super();
-        this.x = x;
-        this.y = y;
     }
 }
 
