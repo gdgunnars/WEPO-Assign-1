@@ -148,6 +148,10 @@ $("#mainCanvas").on("mousemove", function(e) {
     }
 });
 
+function setShape(shape) {
+    settings.nextShape = shape;
+}
+
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
 
