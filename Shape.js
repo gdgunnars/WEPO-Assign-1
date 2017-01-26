@@ -32,8 +32,10 @@ class Rectangle extends Shape {
     }
 
     draw(context) {
-        context.fillStyle = this.color;
+        //context.fillStyle = this.color;
+        //context.fillRect(this.x, this.y, 200, 200);
         context.fillRect(this.x, this.y, 40, 40);
+        console.log(this.x, this.y);
     }
 }
 
@@ -77,29 +79,30 @@ class Text extends Shape {
 
 
 var settings = {
-    canvasObj = document.getElementById("mainCanvas"),
-    nextShape = "Rectangle",
-    nextColor = "Black",
-    isDrawing = false,
-    currentShape = undefined,
+    canvasObj: document.getElementById("mainCanvas"),
+    nextShape: "Rectangle",
+    nextColor: "Black",
+    isDrawing: false,
+    currentShape: undefined,
     shapes: []
 };
 
-$("mainCanvas").on("mousedown", function(e) {
+$("#mainCanvas").on("mousedown", function(e) {
+    console.log("Mouse clicked");
     settings.isDrawing = true;
 
     var shape = undefined;
     var context = settings.canvasObj.getContext("2d");
-    var rect = canvasObj.getBoundingClientRect();
+    var rect = settings.canvasObj.getBoundingClientRect();
 
-    var x = e.clientX-rect.left;
-    var y = e.clientY-rect.top;
+    var x = e.pageX - this.offsetLeft;
+    var y = e.pageY - this.offsetTop;
 
     if (settings.nextShape === "Circle") {
         shape = new Circle(x, y, settings.nextColor);
     }
     else if (settings.nextShape === "Rectangle") {
-        shape = new Rectange(x, y, settings.nextColor);
+        shape = new Rectangle(x, y, settings.nextColor);
     }
     else if (settings.nextShape === "Pen") {
         shape = new Pen(x, y, settings.nextColor);
@@ -117,9 +120,9 @@ $("mainCanvas").on("mousedown", function(e) {
     shape.draw(context);
 });
 
-$("mainCanvas").on("mousemove", function(e) {
+$("#mainCanvas").on("mousemove", function(e) {
     var context = settings.canvasObj.getContext("2d");
-    var rect = canvasObj.getBoundingClientRect();
+    var rect = settings.canvasObj.getBoundingClientRect();
 
     var x = e.clientX-rect.left;
     var y = e.clientY-rect.top;
@@ -139,13 +142,21 @@ function drawAll() {
     // TODO: draw all the objects
 }
 
-$("mainCanvas").on("mouseup", function(e) {
+$("#mainCanvas").on("mouseup", function(e) {
     var context = settings.canvasObj.getContext("2d");
-    var rect = canvasObj.getBoundingClientRect();
+    var rect = settings.canvasObj.getBoundingClientRect();
 
     var x = e.clientX-rect.left;
     var y = e.clientY-rect.top;
 
-    settings.currentShape.setEnd(x, y);
+    if (settings.currentShape !== undefined) {
+        settings.currentShape.setEnd(x, y);
+    }
+
     settings.currentShape = undefined;
 });
+/*
+var context = settings.canvasObj.getContext("2d");
+var c = new Rectangle(200, 200, "black");
+c.draw(context);
+*/
