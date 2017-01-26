@@ -15,6 +15,8 @@ class Pen extends Shape {
         context.lineWidth = this.lineWidth;
         context.strokeStyle = this.color;
     	context.fillStyle = this.color;
+        context.lineJoin = "round";
+        context.lineCap = "round";
 
         if (this.points.length < 3) {
             context.beginPath();
