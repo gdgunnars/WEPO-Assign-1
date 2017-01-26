@@ -1,10 +1,11 @@
 class Shape {
-    constructor(x, y, color) {
+    constructor(x, y, color, lineWidth) {
         this.x = x;
         this.y = y;
         this.endX = x;
         this.endY = y;
         this.color = color;
+        this.lineWidth = lineWidth;
     }
 
     setEnd(x, y) {
@@ -14,8 +15,8 @@ class Shape {
 }
 
 class Circle extends Shape {
-    constructor(x, y, color) {
-        super(x, y, color);
+    constructor(x, y, color, lineWidth) {
+        super(x, y, color, lineWidth);
     }
 
     draw(context) {
@@ -27,8 +28,8 @@ class Circle extends Shape {
 
 
 class Rectangle extends Shape {
-    constructor(x, y, color) {
-        super(x, y, color);
+    constructor(x, y, color, lineWidth) {
+        super(x, y, color, lineWidth);
     }
 
     draw(context) {
@@ -40,20 +41,54 @@ class Rectangle extends Shape {
     }
 }
 
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
 
 class Pen extends Shape {
-    constructor(x, y, color) {
-        super(x, y, color);
+    constructor(x, y, color, lineWidth) {
+        super(x, y, color, lineWidth);
         this.points = [];
     }
 
     setEnd(x, y) {
-        this.points.push({x: x, y: y});
-        //TODO: create class for point, so we can use push(new Point(x,y)).
+        this.points.push(new Point(x, y));
     }
 
     draw(context) {
-        // TODO: draw Pen
+        /* Got help from this site to draw smooth lines:
+         * http://codetheory.in/html5-canvas-drawing-lines-with-smooth-edges/
+         */
+        context.lineWidth = this.lineWidth;
+        context.strokeStyle = this.color;
+    	context.fillStyle = this.color;
+
+        if (this.points.length < 3) {
+            context.beginPath();
+            context.arc(this.x, this.y, context.lineWidth / 2, 0, Math.PI * 2, !0);
+			context.fill();
+			context.closePath();
+        }
+        else {
+            context.beginPath();
+            context.moveTo(this.x, this.y);
+            var i;
+
+            for (i = 1; i < this.points.length-1; i++) {
+                var c = (this.points[i].x + this.points[i + 1].x) / 2;
+                var d = (this.points[i].y + this.points[i + 1].y) / 2;
+                context.quadraticCurveTo(
+                    this.points[i].x,
+                    this.points[i].y,
+                    this.points[i+1].x,
+                    this.points[i+1].y);
+            }
+            context.stroke();
+        }
     }
 }
 
@@ -68,9 +103,9 @@ class Line extends Shape {
     }
 }
 
-class Text extends Shape {
+class Text {
     constructor(x, y, color) {
-        super(x, y, color);
+        // TODO: do stuff
     }
 
     draw(context) {
@@ -86,7 +121,8 @@ var settings = {
     currentShape: undefined,
     shapes: [],
     canvasWidth: 800,
-    canvasHeight: 600
+    canvasHeight: 600,
+    lineWidth: 6
 };
 
 
@@ -110,16 +146,16 @@ $("#mainCanvas").on("mousedown", function(e) {
     var y = c.y;
 
     if (settings.nextShape === "Circle") {
-        shape = new Circle(x, y, settings.nextColor);
+        shape = new Circle(x, y, settings.nextColor, settings.lineWidth);
     }
     else if (settings.nextShape === "Rectangle") {
-        shape = new Rectangle(x, y, settings.nextColor);
+        shape = new Rectangle(x, y, settings.nextColor, settings.lineWidth);
     }
     else if (settings.nextShape === "Pen") {
-        shape = new Pen(x, y, settings.nextColor);
+        shape = new Pen(x, y, settings.nextColor, settings.lineWidth);
     }
     else if (settings.nextShape === "Line") {
-        shape = new Line(x, y, settings.nextColor);
+        shape = new Line(x, y, settings.nextColor, settings.lineWidth);
     }
     else if (settings.nextShape === "Text") {
         shape = new Text(x, y, settings.nextColor);
@@ -152,9 +188,7 @@ function drawAll() {
     var context = settings.canvasObj.getContext("2d");
 
     // TODO: clear the canvasObj
-    context.fillStyle = "#FFF";
-    context.fillRect(0, 0, settings.canvasWidth, settings.canvasHeight);
-
+    context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
 
     // TODO: draw all the objects
     for (var i = 0; i < settings.shapes.length; i++) {
