@@ -1,15 +1,20 @@
 class Rectangle extends Shape {
-    constructor(x, y, color, lineWidth) {
-        super(x, y, color, lineWidth);
+    constructor(x, y, borderColor, fillColor, fill, lineWidth) {
+        super(x, y, borderColor, lineWidth);
+        this.fillColor = fillColor;
+        this.fill = fill;
     }
 
     draw(context) {
-        context.lineWidth = this.lineWidth;
-        context.strokeStyle = this.color;
         var height = this.endX - this.x;
         var width = this.endY - this.y;
-
-        //context.fillStyle = this.color;
+        if (this.fill === "Fill") {
+            context.fillStyle = this.fillColor;
+            context.fillRect(this.x, this.y, height, width);
+        }
+        context.lineWidth = this.lineWidth;
+        context.strokeStyle = this.color;
+        context.beginPath();
         context.rect(this.x, this.y, height, width);
         context.stroke();
     }

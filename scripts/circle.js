@@ -1,6 +1,8 @@
 class Circle extends Shape {
-    constructor(x, y, color, lineWidth) {
-        super(x, y, color, lineWidth);
+    constructor(x, y, borderColor, fillColor, fill, lineWidth) {
+        super(x, y, borderColor, lineWidth);
+        this.fillColor = fillColor;
+        this.fill = fill;
     }
 
     draw(context) {
@@ -24,12 +26,17 @@ class Circle extends Shape {
         for(var a = step; a < pi2; a += step) {
             context.lineTo(centerX + radiusX * Math.cos(a),
                            centerY + radiusY * Math.sin(a));
+
         }
 
         // Fix minor gap in circle.
         context.lineTo(centerX + radiusX * Math.cos(a+step),
                        centerY + radiusY * Math.sin(a+step));
-
+        if (this.fill === "Fill") {
+            context.fillStyle = this.fillColor;
+            context.fill();
+        }
+        
         context.stroke();
         context.closePath();
     }

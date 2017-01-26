@@ -1,13 +1,14 @@
 var settings = {
     canvasObj: document.getElementById("mainCanvas"),
     nextShape: "Pen",
-    nextColor: "#000",
-    isDrawing: false,
+    nextBorderColor: "#000",
+    nextFillColor: "#000",
     currentShape: undefined,
     shapes: [],
     canvasWidth: 800,
     canvasHeight: 600,
-    lineWidth: 1
+    lineWidth: 1,
+    fill: "NoFill"
 };
 
 $(document).ready(function() {
@@ -61,9 +62,22 @@ $('#button_clear').on('click', function() {
     clearCanvas();
 });
 
+$('input[type=radio][name=fill]').on('change', function() {
+    switch ($(this).val()) {
+        case "Fill":
+            console.log("Set Fill");
+            setFill("Fill");
+            break;
+        case "NoFill":
+            console.log("Set No Fill");
+            setFill("NoFill");
+            break;
+    }
+})
 
-$("#colorpicker").spectrum({
-    color: settings.nextColor,
+
+$("#colorpicker_border, #colorpicker_fill").spectrum({
+    color: "#000",
     showInput: true,
     className: "full-spectrum",
     showInitial: true,
@@ -105,40 +119,41 @@ $("#colorpicker").spectrum({
     ],
     change: function(color) {
         console.log(color.toHexString());
-        setColor(color.toHexString());
+        console.log(this.id);
+        setColor(color.toHexString(), this.id);
     }
 });
 
 
 $("#mainCanvas").on("mousedown", function(e) {
     e.preventDefault();
-    settings.isDrawing = true;
 
     var shape = undefined;
     var context = settings.canvasObj.getContext("2d");
-    var rect = settings.canvasObj.getBoundingClientRect();
 
     var c = getRelativeCoords(e);
     var x = c.x;
     var y = c.y;
 
     if (settings.nextShape === "Circle") {
-        shape = new Circle(x, y, settings.nextColor, settings.lineWidth);
+        shape = new Circle(x, y, settings.nextBorderColor, settings.nextFillColor,
+                                 settings.fill, settings.lineWidth);
     }
     else if (settings.nextShape === "Rectangle") {
-        shape = new Rectangle(x, y, settings.nextColor, settings.lineWidth);
+        shape = new Rectangle(x, y, settings.nextBorderColor, settings.nextFillColor,
+                                    settings.fill, settings.lineWidth);
     }
     else if (settings.nextShape === "Pen") {
-        shape = new Pen(x, y, settings.nextColor, settings.lineWidth);
+        shape = new Pen(x, y, settings.nextBorderColor, settings.lineWidth);
     }
     else if (settings.nextShape === "Line") {
-        shape = new Line(x, y, settings.nextColor, settings.lineWidth);
+        shape = new Line(x, y, settings.nextBorderColor, settings.lineWidth);
     }
     else if (settings.nextShape === "Text") {
-        shape = new Text(x, y, settings.nextColor);
+        shape = new Text(x, y, settings.nextBorderColor);
     }
     else if (settings.nextShape === "SprayCan") {
-        shape = new SprayCan(x, y, settings.nextColor, settings.lineWidth);
+        shape = new SprayCan(x, y, settings.nextBorderColor, settings.lineWidth);
     }
 
     settings.currentShape = shape;
@@ -198,10 +213,19 @@ function setWidth(lwidth) {
 }
 
 
-function setColor(color) {
-    settings.nextColor = color;
+function setColor(color, id) {
+    if (id === "colorpicker_border"){
+        settings.nextBorderColor = color;
+    }
+    else if (id === "colorpicker_fill"){
+        settings.nextFillColor = color;
+    }
 }
 
+
+function setFill(fill) {
+    settings.fill = fill;
+}
 
 function clearCanvas() {
     settings.shapes = [];
@@ -213,6 +237,7 @@ function clearCanvas() {
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
     context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
+    console.log("clearing canvas")
     for (var i = 0; i < settings.shapes.length; i++) {
         settings.shapes[i].draw(context);
     }
