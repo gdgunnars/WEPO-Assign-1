@@ -1,11 +1,65 @@
+
+body {
+    /*background-color: #333;*/
+    margin-left: 10%;
+}
+
 #mainCanvas {
    /*width: 75%;
    height: 75%;
    text-align:center;*/
+   border:1px solid #000000;
    position: absolute;
    /*left: 50%;*/
    margin-top: 10px;
-   width: 1280px;
-   height: 800px;
-   margin-left: 10px;
+   width: 800;
+   height: 600px;
+   background-color: #FFF;
+
 }
+
+.container-left{
+    width: 800px;
+}
+
+.container-right{
+    width: 200px;
+    height: 600px;
+    margin-top: 10px;
+    margin-left: 810px;
+    border:1px solid black;
+
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+ul li {
+    float: left;
+    padding-left: 12%;
+}
+
+ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul li a:hover {
+    background-color: #111;
+}
+input { vertical-align: middle; margin-top: -1px;}
+/*
+input[type="radio"] {
+  margin-top: -1px;
+  vertical-align: middle;
+  height: 100%;
+}
+*/
