@@ -1,6 +1,6 @@
 var settings = {
     canvasObj: document.getElementById("mainCanvas"),
-    nextShape: "Circle",
+    nextShape: "Pen",
     nextColor: "#000",
     isDrawing: false,
     currentShape: undefined,
@@ -23,103 +23,6 @@ class Shape {
     setEnd(x, y) {
         this.endX = x;
         this.endY = y;
-    }
-}
-
-class Circle extends Shape {
-    constructor(x, y, color, lineWidth) {
-        super(x, y, color, lineWidth);
-    }
-
-    draw(context) {
-        context.beginPath();
-        context.lineWidth = this.lineWidth;
-        context.arc(this.x,this.y,50,0,2*Math.PI);
-        context.stroke();
-    }
-}
-
-class Rectangle extends Shape {
-    constructor(x, y, color, lineWidth) {
-        super(x, y, color, lineWidth);
-    }
-
-    draw(context) {
-        var height = this.endX - this.x;
-        var width = this.endY - this.y;
-
-        context.fillStyle = this.color;
-        context.fillRect(this.x, this.y, height, width);
-    }
-}
-
-class Point {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-}
-
-class Pen extends Shape {
-    constructor(x, y, color, lineWidth) {
-        super(x, y, color, lineWidth);
-        this.points = [];
-    }
-
-    setEnd(x, y) {
-        this.points.push(new Point(x, y));
-    }
-
-    draw(context) {
-        /* Got help from this site to draw smooth lines:
-         * http://codetheory.in/html5-canvas-drawing-lines-with-smooth-edges/
-         */
-        context.lineWidth = this.lineWidth;
-        context.strokeStyle = this.color;
-    	context.fillStyle = this.color;
-
-        if (this.points.length < 3) {
-            context.beginPath();
-            context.arc(this.x, this.y, context.lineWidth / 2, 0, Math.PI * 2, !0);
-			context.fill();
-			context.closePath();
-        }
-        else {
-            context.beginPath();
-            context.moveTo(this.x, this.y);
-            var i;
-
-            for (i = 1; i < this.points.length-1; i++) {
-                var c = (this.points[i].x + this.points[i + 1].x) / 2;
-                var d = (this.points[i].y + this.points[i + 1].y) / 2;
-                context.quadraticCurveTo(
-                    this.points[i].x,
-                    this.points[i].y,
-                    this.points[i+1].x,
-                    this.points[i+1].y);
-            }
-            context.stroke();
-        }
-    }
-}
-
-class Line extends Shape {
-    constructor(x, y, color) {
-        super(x, y, color);
-    }
-
-    draw(context) {
-        // TODO: draw Line
-    }
-}
-
-class Text {
-    constructor(x, y, color) {
-        // TODO: do stuff
-    }
-
-    draw(context) {
-        // TODO: draw text
     }
 }
 
