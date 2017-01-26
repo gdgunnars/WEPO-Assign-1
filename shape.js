@@ -93,6 +93,8 @@ function getRelativeCoords(event) {
 }
 
 
+
+
 $("#mainCanvas").on("mousedown", function(e) {
     console.log("Mouse clicked");
     settings.isDrawing = true;
