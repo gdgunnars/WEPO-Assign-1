@@ -4,6 +4,7 @@ class Circle extends Shape {
     }
 
     draw(context) {
+        context.lineWidth = this.lineWidth;
         context.strokeStyle = this.color;
 
         var radiusX = (this.x - this.endX) * 0.5,
@@ -23,8 +24,11 @@ class Circle extends Shape {
                            centerY + radiusY * Math.sin(a));
         }
 
+        // Fix minor gap in circle.
+        context.lineTo(centerX + radiusX * Math.cos(a+step),
+                       centerY + radiusY * Math.sin(a+step));
+
         context.stroke();
         context.closePath();
-
     }
 }
