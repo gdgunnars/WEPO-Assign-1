@@ -38,6 +38,10 @@ $('input[type=radio][name=shape]').on('change', function() {
             console.log("Set shape to Rectangle");
             setShape("Rectangle");
             break;
+        case 'FilledRectangle':
+            console.log("Set shape to FilledRectangle");
+            setShape("FilledRectangle");
+            break;
         case 'Pen':
             console.log("Set shape to Pen");
             setShape("Pen");
@@ -142,6 +146,9 @@ $("#mainCanvas").on("mousedown", function(e) {
     else if (settings.nextShape === "Rectangle") {
         shape = new Rectangle(x, y, settings.nextBorderColor, settings.nextFillColor,
                                     settings.fill, settings.lineWidth);
+    }
+    else if (settings.nextShape === "FilledRectangle") {
+        shape = new FilledRectangle(x, y, settings.nextColor, settings.lineWidth);
     }
     else if (settings.nextShape === "Pen") {
         shape = new Pen(x, y, settings.nextBorderColor, settings.lineWidth);

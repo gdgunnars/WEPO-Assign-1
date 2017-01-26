@@ -6,6 +6,9 @@ class Rectangle extends Shape {
     }
 
     draw(context) {
+        context.beginPath();
+        context.lineWidth = this.lineWidth;
+        context.strokeStyle = this.color;
         var height = this.endX - this.x;
         var width = this.endY - this.y;
         if (this.fill === "Fill") {
