@@ -1,3 +1,15 @@
+var settings = {
+    canvasObj: document.getElementById("mainCanvas"),
+    nextShape: "Circle",
+    nextColor: "#000",
+    isDrawing: false,
+    currentShape: undefined,
+    shapes: [],
+    canvasWidth: 800,
+    canvasHeight: 600,
+    lineWidth: 6
+};
+
 class Shape {
     constructor(x, y, color, lineWidth) {
         this.x = x;
@@ -27,7 +39,6 @@ class Circle extends Shape {
     }
 }
 
-
 class Rectangle extends Shape {
     constructor(x, y, color, lineWidth) {
         super(x, y, color, lineWidth);
@@ -48,7 +59,6 @@ class Point {
         this.y = y;
     }
 }
-
 
 class Pen extends Shape {
     constructor(x, y, color, lineWidth) {
@@ -93,7 +103,6 @@ class Pen extends Shape {
     }
 }
 
-
 class Line extends Shape {
     constructor(x, y, color) {
         super(x, y, color);
@@ -113,26 +122,6 @@ class Text {
         // TODO: draw text
     }
 }
-
-var settings = {
-    canvasObj: document.getElementById("mainCanvas"),
-    nextShape: "Circle",
-    nextColor: "#000",
-    isDrawing: false,
-    currentShape: undefined,
-    shapes: [],
-    canvasWidth: 800,
-    canvasHeight: 600,
-    lineWidth: 6
-};
-
-
-function getRelativeCoords(event) {
-    return { x: event.offsetX || event.layerX, y: event.offsetY || event.layerY };
-}
-
-
-
 
 $("#mainCanvas").on("mousedown", function(e) {
     console.log("Mouse down");
@@ -185,21 +174,7 @@ $("#mainCanvas").on("mousemove", function(e) {
     }
 });
 
-function setShape(shape) {
-    settings.nextShape = shape;
-}
 
-function drawAll() {
-    var context = settings.canvasObj.getContext("2d");
-
-    // TODO: clear the canvasObj
-    context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
-
-    // TODO: draw all the objects
-    for (var i = 0; i < settings.shapes.length; i++) {
-        settings.shapes[i].draw(context);
-    }
-}
 
 $("#mainCanvas").on("mouseup", function(e) {
     console.log("Mouse up");
@@ -218,3 +193,23 @@ $("#mainCanvas").on("mouseup", function(e) {
 
     settings.currentShape = undefined;
 });
+
+function getRelativeCoords(event) {
+    return { x: event.offsetX || event.layerX, y: event.offsetY || event.layerY };
+}
+
+function setShape(shape) {
+    settings.nextShape = shape;
+}
+
+function drawAll() {
+    var context = settings.canvasObj.getContext("2d");
+
+    // TODO: clear the canvasObj
+    context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
+
+    // TODO: draw all the objects
+    for (var i = 0; i < settings.shapes.length; i++) {
+        settings.shapes[i].draw(context);
+    }
+}
