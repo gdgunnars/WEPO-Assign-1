@@ -144,7 +144,8 @@ $("#mainCanvas").on("mousedown", function(e) {
                                     settings.fill, settings.lineWidth);
     }
     else if (settings.nextShape === "Pen") {
-        shape = new Pen(x, y, settings.nextBorderColor, settings.lineWidth);
+        shape = new Pen(x, y, settings.nextBorderColor, settings.nextFillColor,
+                              settings.fill, settings.lineWidth);
     }
     else if (settings.nextShape === "Line") {
         shape = new Line(x, y, settings.nextBorderColor, settings.lineWidth);

@@ -1,7 +1,9 @@
 class Pen extends Shape {
-    constructor(x, y, color, lineWidth) {
-        super(x, y, color, lineWidth);
+    constructor(x, y, borderColor, glowColor, fill, lineWidth) {
+        super(x, y, borderColor, lineWidth);
         this.points = [];
+        this.glowColor = glowColor;
+        this.fill = fill;
     }
 
     setEnd(x, y) {
@@ -17,6 +19,10 @@ class Pen extends Shape {
     	context.fillStyle = this.color;
         context.lineJoin = "round";
         context.lineCap = "round";
+        if (this.fill === "Fill") {
+            context.shadowBlur = this.lineWidth * 2;
+            context.shadowColor = this.glowColor;
+        }
 
         if (this.points.length < 3) {
             context.beginPath();
