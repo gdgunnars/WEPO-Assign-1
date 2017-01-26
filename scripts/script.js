@@ -9,8 +9,28 @@ var settings = {
     shapes: [],
     canvasWidth: 800,
     canvasHeight: 600,
-    lineWidth: 6
+    lineWidth: 1
 };
+
+$(document).ready(function() {
+    var select = $("<select></select>", {
+        class: 'line-width'
+    });
+
+    for (var i = 1; i <= 20; i++) {
+        select.append($('<option>', {
+            value: i,
+            text: i
+        }));
+    }
+
+    $(".container-right").append(select);
+
+    $('select.line-width').on('change', function() {
+        console.log(this.value)
+        settings.lineWidth = this.value;
+    });
+});
 
 $('input[type=radio][name=shape]').on('change', function() {
     switch($(this).val()) {
@@ -28,6 +48,8 @@ $('input[type=radio][name=shape]').on('change', function() {
             break;
     }
 });
+
+
 
 
 $("#mainCanvas").on("mousedown", function(e) {
