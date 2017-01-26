@@ -88,7 +88,7 @@ var settings = {
 };
 
 $("#mainCanvas").on("mousedown", function(e) {
-    console.log("Mouse clicked");
+    console.log("Mouse down");
     settings.isDrawing = true;
 
     var shape = undefined;
@@ -128,6 +128,7 @@ $("#mainCanvas").on("mousemove", function(e) {
     var y = e.clientY-rect.top;
 
     if (settings.currentShape !== undefined) {
+        console.log("Mouse down and moved");
         // TODO: update the end pos of current shape
         settings.currentShape.setEnd(x, y);
 
@@ -137,12 +138,15 @@ $("#mainCanvas").on("mousemove", function(e) {
 
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
+    context.fillStyle="#FFF";
+    context.fillRect(0, 0, 800, 600);
     // TODO: clear the canvasObj
 
     // TODO: draw all the objects
 }
 
 $("#mainCanvas").on("mouseup", function(e) {
+    console.log("Mouse up");
     var context = settings.canvasObj.getContext("2d");
     var rect = settings.canvasObj.getBoundingClientRect();
 
