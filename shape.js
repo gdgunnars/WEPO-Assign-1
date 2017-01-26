@@ -201,6 +201,10 @@ function setShape(shape) {
     settings.nextShape = shape;
 }
 
+function setWidth(lwidth) {
+    settings.lineWidth = lwidth;
+}
+
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
 
