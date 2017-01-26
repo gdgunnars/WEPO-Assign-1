@@ -206,6 +206,11 @@ function setWidth(lwidth) {
     settings.lineWidth = lwidth;
 }
 
+function setColor(color) {
+    settings.nextColor = color;
+}
+
+
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
 
