@@ -19,9 +19,13 @@ class Pen extends Shape {
     	context.fillStyle = this.color;
         context.lineJoin = "round";
         context.lineCap = "round";
+
         if (this.fill === "Fill") {
-            context.shadowBlur = this.lineWidth * 2;
+            context.shadowBlur = this.lineWidth * 3;
             context.shadowColor = this.glowColor;
+        }
+        else {
+            context.shadowBlur = 0;
         }
 
         if (this.points.length < 3) {
@@ -29,6 +33,7 @@ class Pen extends Shape {
             context.arc(this.x, this.y, context.lineWidth / 2, 0, Math.PI * 2, !0);
 			context.fill();
 			context.closePath();
+            return;
         }
         else {
             context.beginPath();
@@ -45,6 +50,8 @@ class Pen extends Shape {
                     this.points[i+1].y);
             }
             context.stroke();
+            context.shadowBlur = 0;
+            context.closePath();
         }
     }
 }

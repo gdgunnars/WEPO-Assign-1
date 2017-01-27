@@ -144,6 +144,7 @@ $("#mainCanvas").on("mousedown", function(e) {
                                     settings.fill, settings.lineWidth);
     }
     else if (settings.nextShape === "Pen") {
+        console.log(settings.fill);
         shape = new Pen(x, y, settings.nextBorderColor, settings.nextFillColor,
                               settings.fill, settings.lineWidth);
     }
@@ -172,7 +173,6 @@ $("#mainCanvas").on("mousemove", function(e) {
     var y = c.y;
 
     if (settings.currentShape !== undefined) {
-        // TODO: update the end pos of current shape
         settings.currentShape.setEnd(x, y);
 
         drawAll();
@@ -238,7 +238,6 @@ function clearCanvas() {
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
     context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
-    console.log("clearing canvas")
     for (var i = 0; i < settings.shapes.length; i++) {
         settings.shapes[i].draw(context);
     }
