@@ -239,6 +239,8 @@ function setFill(fill) {
 }
 
 function clearCanvas() {
+
+    settings.discarded = settings.shapes.slice();
     settings.shapes = [];
     var context = settings.canvasObj.getContext("2d");
     context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
