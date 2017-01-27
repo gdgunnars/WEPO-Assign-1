@@ -5,6 +5,7 @@ var settings = {
     nextFillColor: "#000",
     currentShape: undefined,
     shapes: [],
+    discarded: [],
     canvasWidth: 800,
     canvasHeight: 600,
     lineWidth: 1,
@@ -60,6 +61,15 @@ $('input[type=radio][name=shape]').on('change', function() {
 
 $('#button_clear').on('click', function() {
     clearCanvas();
+});
+
+
+$('#button_undo').on('click', function() {
+    undo();
+});
+
+$('#button_redo').on('click', function() {
+    redo();
 });
 
 $('input[type=radio][name=fill]').on('change', function() {
@@ -233,6 +243,23 @@ function clearCanvas() {
     var context = settings.canvasObj.getContext("2d");
     context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
 }
+
+function undo() {
+    if(settings.shapes.length > 0) {
+        settings.discarded.push(settings.shapes.pop());
+    }
+    console.log("undo");
+    drawAll();
+
+}
+
+function redo() {
+    if(settings.discarded.length > 0){
+        settings.shapes.push(settings.discarded.shift());
+    }
+    drawAll();
+}
+
 
 
 function drawAll() {
