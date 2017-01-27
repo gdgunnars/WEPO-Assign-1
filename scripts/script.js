@@ -72,6 +72,33 @@ $('#button_redo').on('click', function() {
     redo();
 });
 
+$('#button_upload').on('click', function() {
+
+
+    var title = prompt("Enter drawing name", "drawing");
+
+    if (title != undefined) {
+        var drawing = {
+        title: title,
+        content: settings.shapes
+        }
+        var url = "http://localhost:3000/api/drawings";
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: url,
+            data: JSON.stringify(drawing),
+            success: function (data) {
+                // The drawing was successfully saved
+            },
+            error: function (xhr, err) {
+                // The drawing could NOT be saved
+            }
+        });
+    }
+});
+
+
 $('input[type=radio][name=fill]').on('change', function() {
     switch ($(this).val()) {
         case "Fill":
