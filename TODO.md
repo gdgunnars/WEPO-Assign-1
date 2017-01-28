@@ -18,4 +18,4 @@
 
 ### Math formulas
 
-### Fix undo/redo
+### Eraser

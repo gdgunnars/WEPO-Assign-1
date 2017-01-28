@@ -444,7 +444,7 @@ function undo() {
 
 function redo() {
     if(settings.discarded.length > 0){
-        settings.shapes.push(settings.discarded.shift());
+        settings.shapes.push(settings.discarded.pop());
     }
     drawAll();
 }
