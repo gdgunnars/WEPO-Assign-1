@@ -35,7 +35,7 @@ class Line extends Shape {
             recontext: 0,
             rectY: -this.lineWidth / 2,
             rectWidth: lineLength,
-            rectHeight: this.lineWidth
+            rectHeight: this.lineWidth * 5
         });
     }
 

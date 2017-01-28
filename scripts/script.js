@@ -389,6 +389,7 @@ $("#mainCanvas").on("mouseup", function(e) {
         }
         if (settings.currentTool === "ColorTool") {
             setCurrentShapeToClicked(context, x, y);
+            console.log(settings.currentShape);
             settings.currentShape.primaryColor = settings.nextPrimaryColor;
             settings.currentShape.secondaryColor = settings.nextSecondaryColor;
             settings.currentShape.fill = settings.fill;
@@ -423,9 +424,6 @@ function setTool(tool) {
     }
     else if (tool === "EditTool") {
         $('#mainCanvas').css('cursor','nwse-resize');
-    }
-    else if (tool === "ColorTool") {
-        $('#mainCanvas').css('cursor', 'url(images/paint_bucket.png), auto');
     }
     else {
         $('#mainCanvas').css('cursor','auto');
