@@ -3,6 +3,9 @@ var settings = {
     nextShape: "Pen",
     nextBorderColor: "#000",
     nextFillColor: "#000",
+    font: undefined,
+    fontSize: undefined,
+    text: "",
     currentShape: undefined,
     shapes: [],
     discarded: [],
@@ -74,6 +77,10 @@ $('input[type=radio][name=shape]').on('change', function() {
             console.log("Set shape to SprayCan");
             setShape("SprayCan");
             break;
+        case 'Text':
+            console.log("Set shape to Text");
+            setShape("Text");
+            break;
     }
 });
 
@@ -117,21 +124,11 @@ $('#button_save').on('click', function() {
 
 $('#button_open').on('click', function() {
     var url = "http://localhost:3000/api/drawings";
-      /*for (int i = 0; i < data.length; i++){
-
-          //alert( "Data Loaded: " + data[0]['title']);
-      }*/
-
-
-      $.get(url, function(data, status){
-          for (var i = 0; i < data.length; i++){
-              console.log(data[i]['title']);
-          }
-      });
-});
-
-$("button").click(function(){
-
+    $.get(url, function(data, status){
+      for (var i = 0; i < data.length; i++){
+          console.log(data[i]['title']);
+      }
+    });
 });
 
 $('input[type=radio][name=fill]').on('change', function() {
@@ -146,7 +143,6 @@ $('input[type=radio][name=fill]').on('change', function() {
             break;
     }
 })
-
 
 $("#colorpicker_border, #colorpicker_fill").spectrum({
     color: "#000",
@@ -221,7 +217,6 @@ $("#mainCanvas").on("mousedown", function(e) {
 
     }
     else {
-
         if (settings.nextShape === "Circle") {
             shape = new Circle(x, y, settings.nextBorderColor, settings.nextFillColor,
                                      settings.fill, settings.lineWidth, "Circle");
@@ -239,7 +234,9 @@ $("#mainCanvas").on("mousedown", function(e) {
             shape = new Line(x, y, settings.nextBorderColor, settings.lineWidth, "Line");
         }
         else if (settings.nextShape === "Text") {
-            shape = new Text(x, y, settings.nextBorderColor);
+            settings.text = prompt("Enter your text here");
+            shape = new Text(x, y, settings.nextFillColor, settings.text, settings.type, settings.fontSize, settings.font);
+            settings.shapes.push(shape);
         }
         else if (settings.nextShape === "SprayCan") {
             shape = new SprayCan(x, y, settings.nextBorderColor, settings.lineWidth, "SprayCan");
@@ -274,7 +271,6 @@ $("#mainCanvas").on("mousemove", function(e) {
     }
     else if (settings.currentShape !== undefined && settings.currentTool === "DrawTool") {
         settings.currentShape.setEnd(x, y);
-
         drawAll();
         settings.currentShape.draw(context);
     }
@@ -362,7 +358,6 @@ function undo() {
     }
     console.log("undo");
     drawAll();
-
 }
 
 function redo() {
@@ -382,7 +377,6 @@ function drawAll() {
 
 
 function hitTest(shape, mx, my) {
-
     if (shape.type === "Circle") {
         var dx = mx - shape.centerX;
         var dy = my - shape.centerY;
@@ -396,5 +390,4 @@ function hitTest(shape, mx, my) {
 
         return ((mx >= startX && mx <= endX) && (my >= startY && my <= endY));
     }
-
 }
