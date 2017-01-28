@@ -120,6 +120,13 @@ $('input[type=radio][name=shape]').on('change', function() {
 });
 
 $(document).keypress(function(e) {
+    console.log(e.which);
+    if(e.which === 26){
+        undo();
+    }
+    if(e.which === 25){
+        redo();
+    }
     if (e.which === 100) {
         $("#drawtool").prop("checked", true)
         console.log("Set tool to Draw");

@@ -6,16 +6,12 @@
 
 ## Fix looks
 
-## Move shapes
+## Move text
 
 ## Bucket fill (change colors of shapes etc)
 
-## Default pen size sensible
-
 ### 4 basic colors readily available
 
-### More advanced undo / redo
+### Color tool
 
-### Math formulas
-
-### Eraser
+### Delete tool
