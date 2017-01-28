@@ -1,8 +1,7 @@
 class Pen extends Shape {
-    constructor(x, y, borderColor, glowColor, fill, lineWidth, type) {
-        super(x, y, borderColor, lineWidth, type);
+    constructor(x, y, primaryColor, secondaryColor, fill, lineWidth, type) {
+        super(x, y, primaryColor, secondaryColor, lineWidth, type);
         this.points = [];
-        this.glowColor = glowColor;
         this.fill = fill;
     }
 
@@ -14,15 +13,16 @@ class Pen extends Shape {
         /* Got help from this site to draw smooth lines:
          * http://codetheory.in/html5-canvas-drawing-lines-with-smooth-edges/
          */
+        context.restore();
         context.lineWidth = this.lineWidth;
-        context.strokeStyle = this.color;
-    	context.fillStyle = this.color;
+        context.strokeStyle = this.primaryColor;
+    	context.fillStyle = this.primaryColor;
         context.lineJoin = "round";
         context.lineCap = "round";
 
         if (this.fill === "Fill") {
             context.shadowBlur = this.lineWidth * 4;
-            context.shadowColor = this.glowColor;
+            context.shadowColor = this.secondaryColor;
         }
         else {
             context.shadowBlur = 0;
@@ -50,7 +50,7 @@ class Pen extends Shape {
                     this.points[i+1].y);
             }
             context.stroke();
-            context.shadowBlur = 0;
+            //context.shadowBlur = 0;
             context.closePath();
         }
     }

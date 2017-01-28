@@ -1,7 +1,6 @@
 class Circle extends Shape {
-    constructor(x, y, borderColor, fillColor, fill, lineWidth, type) {
-        super(x, y, borderColor, lineWidth, type);
-        this.fillColor = fillColor;
+    constructor(x, y, primaryColor, secondaryColor, fill, lineWidth, type) {
+        super(x, y, primaryColor, secondaryColor, lineWidth, type);
         this.fill = fill;
         this.radiusX = undefined;
         this.radiusY = undefined;
@@ -13,8 +12,9 @@ class Circle extends Shape {
         /* Got help to draw an ellipse from this site:
          * http://jsfiddle.net/37vge/21/
          */
+        context.shadowBlur = 0;
         context.lineWidth = this.lineWidth;
-        context.strokeStyle = this.color;
+        context.strokeStyle = this.primaryColor;
 
         this.radiusX = (this.x - this.endX) / 2;
         this.radiusY = (this.y - this.endY) / 2;
@@ -37,7 +37,7 @@ class Circle extends Shape {
         context.lineTo(this.centerX + this.radiusX * Math.cos(a+step),
                        this.centerY + this.radiusY * Math.sin(a+step));
         if (this.fill === "Fill") {
-            context.fillStyle = this.fillColor;
+            context.fillStyle = this.secondaryColor;
             context.fill();
         }
 

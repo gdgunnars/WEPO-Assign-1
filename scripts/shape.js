@@ -1,10 +1,11 @@
 class Shape {
-    constructor(x, y, color, lineWidth, type) {
+    constructor(x, y, primaryColor, secondaryColor, lineWidth, type) {
         this.x = x;
         this.y = y;
         this.endX = x;
         this.endY = y;
-        this.color = color;
+        this.primaryColor = primaryColor;
+        this.secondaryColor = secondaryColor;
         this.lineWidth = lineWidth;
         this.type = type;
     }

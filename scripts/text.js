@@ -1,10 +1,11 @@
 class Text  {
-    constructor(x, y, color, text, type, size, font) {
+    constructor(x, y, primaryColor, secondaryColor, text, type, size, font) {
         this.endX = undefined;
         this.endY = undefined;
         this.x = x;
         this.y = y;
-        this.color = (color === undefined) ? "black" : color;
+        this.primaryColor = (primaryColor === undefined) ? "black" : primaryColor;
+        this.secondaryColor = (secondaryColor === undefined) ? "black" : secondaryColor;
         this.text = text;
         this.type = type;
         this.size = (size === undefined) ? "40px " : size;
@@ -17,7 +18,7 @@ class Text  {
     draw(context) {
         context.beginPath();
         context.font = this.font;
-        context.fillStyle = this.color;
+        context.fillStyle = this.primaryColor;
         context.fillText(this.text, this.x, this.y);
     }
 
@@ -26,7 +27,7 @@ class Text  {
         this.endX = 0;
     }
 
-    move(context, offsetX, offsetY) {
+    move(offsetX, offsetY) {
         this.x += offsetX;
         this.y += offsetY;
         this.endX += offsetX;

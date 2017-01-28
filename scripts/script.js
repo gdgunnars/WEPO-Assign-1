@@ -1,8 +1,8 @@
 var settings = {
     canvasObj: document.getElementById("mainCanvas"),
     nextShape: "Pen",
-    nextBorderColor: "#000",
-    nextFillColor: "#000",
+    nextPrimaryColor: "#000",
+    nextSecondaryColor: "#000",
     font: "Arial",
     fontSize: "12px ",
     text: "",
@@ -75,8 +75,6 @@ $(document).ready(function() {
     $('select.fontsize').val("12px ");
 });
 
-
-
 $('input[type=radio][name=tool]').on('change', function() {
     switch ($(this).val()) {
         case 'DrawTool':
@@ -90,6 +88,10 @@ $('input[type=radio][name=tool]').on('change', function() {
         case 'EditTool':
             console.log("Set tool to Edit");
             setTool("EditTool");
+            break;
+        case 'ColorTool':
+            console.log("Set tool to Color Change");
+            setTool("ColorTool");
             break;
     }
 })
@@ -121,9 +123,11 @@ $('input[type=radio][name=shape]').on('change', function() {
 
 $(document).keypress(function(e) {
     console.log(e.which);
+    // Ctrl + Z
     if(e.which === 26){
         undo();
     }
+    // Ctrl + Y
     if(e.which === 25){
         redo();
     }
@@ -141,6 +145,11 @@ $(document).keypress(function(e) {
         $("#movetool").prop("checked", true)
         console.log("Set tool to Move");
         setTool("MoveTool");
+    }
+    if (e.which === 98) {
+        $("#colortool").prop("checked", true)
+        console.log("Set tool to Color change");
+        setTool("ColorTool");
     }
     if (e.which === 112) {
         $("#pen").prop("checked", true)
@@ -170,9 +179,14 @@ $(document).keypress(function(e) {
 
 });
 
-
 $('#button_clear').on('click', function() {
-    clearCanvas();
+    var txt;
+    var r = confirm("Press OK to clear the entire canvas.");
+    if (r == true) {
+        clearCanvas();
+    } else {
+        return;
+    }
 });
 
 
@@ -291,42 +305,31 @@ $("#mainCanvas").on("mousedown", function(e) {
     settings.lastMY = y;
 
     if (settings.currentTool !== "DrawTool") {
-        // Find shape on highest layer that is under cursor.
-        var dragging = false;
-        var highestIndex = -1;
-        for (var i = settings.shapes.length-1; i >= 0; i--) {
-            if (hitTest(settings.shapes[i], x, y)) {
-                console.log("I'M HIT!");
-                dragging = true;
-                settings.currentShape = settings.shapes[i];
-                break;
-            }
-        }
+        setCurrentShapeToClicked(context, x, y);
     }
     else {
         if (settings.nextShape === "Circle") {
-            shape = new Circle(x, y, settings.nextBorderColor, settings.nextFillColor,
+            shape = new Circle(x, y, settings.nextPrimaryColor, settings.nextSecondaryColor,
                                      settings.fill, settings.lineWidth, "Circle");
         }
         else if (settings.nextShape === "Rectangle") {
-            shape = new Rectangle(x, y, settings.nextBorderColor, settings.nextFillColor,
+            shape = new Rectangle(x, y, settings.nextPrimaryColor, settings.nextSecondaryColor,
                                         settings.fill, settings.lineWidth, "Rectangle");
         }
         else if (settings.nextShape === "Pen") {
-            console.log(settings.fill);
-            shape = new Pen(x, y, settings.nextBorderColor, settings.nextFillColor,
+            shape = new Pen(x, y, settings.nextPrimaryColor, settings.nextSecondaryColor,
                                   settings.fill, settings.lineWidth, "Pen");
         }
         else if (settings.nextShape === "Line") {
-            shape = new Line(x, y, settings.nextBorderColor, settings.lineWidth, "Line");
+            shape = new Line(x, y, settings.nextPrimaryColor, settings.nextSecondaryColor, settings.lineWidth, "Line");
         }
         else if (settings.nextShape === "Text") {
             settings.text = prompt("Enter your text here");
-            shape = new Text(x, y, settings.nextBorderColor, settings.text, settings.type, settings.fontSize, settings.font);
+            shape = new Text(x, y, settings.nextPrimaryColor, settings.nextSecondaryColor, settings.text, settings.type, settings.fontSize, settings.font);
             settings.shapes.push(shape);
         }
         else if (settings.nextShape === "SprayCan") {
-            shape = new SprayCan(x, y, settings.nextBorderColor, settings.lineWidth, "SprayCan");
+            shape = new SprayCan(x, y, settings.nextPrimaryColor, settings.lineWidth, "SprayCan");
         }
 
         settings.currentShape = shape;
@@ -384,6 +387,14 @@ $("#mainCanvas").on("mouseup", function(e) {
         if (settings.currentTool === "DrawTool" || settings.currentTool === "EditTool") {
             settings.currentShape.setEnd(x, y);
         }
+        if (settings.currentTool === "ColorTool") {
+            setCurrentShapeToClicked(context, x, y);
+            settings.currentShape.primaryColor = settings.nextPrimaryColor;
+            settings.currentShape.secondaryColor = settings.nextSecondaryColor;
+            settings.currentShape.fill = settings.fill;
+            console.log("Coloring");
+            drawAll();
+        }
 
         console.log(settings.shapes);
         settings.currentShape = undefined;
@@ -400,7 +411,8 @@ function getRelativeCoords(event) {
 }
 
 function setShape(shape) {
-    settings.movetool = false;
+    $("#drawtool").prop("checked", true)
+    setTool("DrawTool");
     settings.nextShape = shape;
 }
 
@@ -411,6 +423,9 @@ function setTool(tool) {
     }
     else if (tool === "EditTool") {
         $('#mainCanvas').css('cursor','nwse-resize');
+    }
+    else if (tool === "ColorTool") {
+        $('#mainCanvas').css('cursor', 'url(images/paint_bucket.png), auto');
     }
     else {
         $('#mainCanvas').css('cursor','auto');
@@ -423,10 +438,10 @@ function setWidth(lwidth) {
 
 function setColor(color, id) {
     if (id === "colorpicker_border"){
-        settings.nextBorderColor = color;
+        settings.nextPrimaryColor = color;
     }
     else if (id === "colorpicker_fill"){
-        settings.nextFillColor = color;
+        settings.nextSecondaryColor = color;
     }
 }
 
@@ -464,8 +479,21 @@ function drawAll() {
     }
 }
 
+function setCurrentShapeToClicked(context, x, y) {
+    // Find shape on highest layer that is under cursor.
+    var dragging = false;
+    var highestIndex = -1;
+    for (var i = settings.shapes.length-1; i >= 0; i--) {
+        if (hitTest(context, settings.shapes[i], x, y)) {
+            dragging = true;
+            settings.currentShape = settings.shapes[i];
+            break;
+        }
+    }
+}
 
-function hitTest(shape, mx, my) {
+
+function hitTest(context, shape, mx, my) {
     if (shape.type === "Circle") {
         var dx = mx - shape.centerX;
         var dy = my - shape.centerY;
@@ -483,11 +511,14 @@ function hitTest(shape, mx, my) {
             endX = Math.max(x1, x2);
             endY = Math.max(y1, y2);
 
-            if ((mx >= startX && mx <= endX) && (my >= startY && my <= endY)) {
+            if ((mx >= startX-shape.lineWidth*0.5 && mx <= endX+shape.lineWidth*0.5) && (my >= startY-shape.lineWidth*0.5 && my <= endY+shape.lineWidth*0.5)) {
                 return true;
             }
         }
         return false;
+    }
+    else if (shape.type === "Line") {
+        return shape.pointIsOnLine(context, mx, my);
     }
     else {
         var startX = Math.min(shape.x, shape.endX);
