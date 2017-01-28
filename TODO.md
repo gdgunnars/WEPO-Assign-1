@@ -17,3 +17,5 @@
 ### More advanced undo / redo
 
 ### Math formulas
+
+### Fix undo/redo
