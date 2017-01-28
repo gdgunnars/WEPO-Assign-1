@@ -8,10 +8,4 @@
 
 ## Move text
 
-## Bucket fill (change colors of shapes etc)
-
 ### 4 basic colors readily available
-
-### Color tool
-
-### Delete tool
