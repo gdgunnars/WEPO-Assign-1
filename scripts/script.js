@@ -312,10 +312,6 @@ function redo() {
     drawAll();
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 774e8a147dd4cbeb5b1d2e3ab767e77bd45e7d34
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
     context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
@@ -340,5 +336,4 @@ function hitTest(shape, mx, my) {
 
         return ((mx >= startX && mx <= endX) && (my >= startY && my <= endY));
     }
-
 }
