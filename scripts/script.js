@@ -3,8 +3,8 @@ var settings = {
     nextShape: "Pen",
     nextBorderColor: "#000",
     nextFillColor: "#000",
-    font: undefined,
-    fontSize: undefined,
+    font: "Arial",
+    fontSize: "12px ",
     text: "",
     currentShape: undefined,
     shapes: [],
@@ -29,14 +29,53 @@ $(document).ready(function() {
             text: i
         }));
     }
-
-    $(".container-right").append(select);
+    $("#linewidth").append(select);
 
     $('select.line-width').on('change', function() {
-        console.log(this.value)
         settings.lineWidth = this.value;
     });
+
+    select = $("<select></select>", {
+        class: 'font'
+    });
+
+    var fonts = ["Arial", "Times New Roman", "Calibri", "Candara", "Tahoma",
+                "Comic Sans MS"];
+
+    for (var i = 0; i < fonts.length; i++) {
+        select.append($('<option>', {
+            value: fonts[i],
+            text: fonts[i]
+        }));
+    }
+    $("#font").append(select);
+
+    $('select.font').on('change', function() {
+        settings.font = this.value;
+    })
+
+    select = $("<select></select>", {
+        class: 'fontsize'
+    });
+
+    var sizes = ["8", "9", "10", "11", "12",
+                "14", "16", "18", "20", "22",
+                "24", "26", "28", "36", "48", "72"];
+    for (var i = 0; i < 16; i++) {
+        select.append($('<option>', {
+            value: sizes[i].concat("px "),
+            text: sizes[i]
+        }));
+    }
+    $("#fontsize").append(select);
+
+    $('select.fontsize').on('change', function() {
+        settings.fontSize = this.value;
+    })
+    $('select.fontsize').val("12px ");
 });
+
+
 
 $('input[type=radio][name=tool]').on('change', function() {
     switch ($(this).val()) {
@@ -235,7 +274,7 @@ $("#mainCanvas").on("mousedown", function(e) {
         }
         else if (settings.nextShape === "Text") {
             settings.text = prompt("Enter your text here");
-            shape = new Text(x, y, settings.nextFillColor, settings.text, settings.type, settings.fontSize, settings.font);
+            shape = new Text(x, y, settings.nextBorderColor, settings.text, settings.type, settings.fontSize, settings.font);
             settings.shapes.push(shape);
         }
         else if (settings.nextShape === "SprayCan") {
