@@ -21,11 +21,4 @@ class Rectangle extends Shape {
         context.rect(this.x, this.y, height, width);
         context.stroke();
     }
-
-    move(offsetX, offsetY) {
-        this.x += offsetX;
-        this.y += offsetY;
-        this.endX += offsetX;
-        this.endY += offsetY;
-    }
 }

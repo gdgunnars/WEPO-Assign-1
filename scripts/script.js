@@ -288,8 +288,8 @@ $("#mainCanvas").on("mousedown", function(e) {
         var dragging = false;
         var highestIndex = -1;
         for (var i = settings.shapes.length-1; i >= 0; i--) {
-            console.log(i)
             if (hitTest(settings.shapes[i], x, y)) {
+                console.log("I'M HIT!");
                 dragging = true;
                 settings.currentShape = settings.shapes[i];
                 break;
@@ -463,6 +463,24 @@ function hitTest(shape, mx, my) {
         var dx = mx - shape.centerX;
         var dy = my - shape.centerY;
         return ((dx * dx) / (shape.radiusX * shape.radiusX) + (dy * dy) / (shape.radiusY * shape.radiusY) <= 1);
+    }
+    else if (shape.type === "Pen") {
+        var x1, y1, x2, y2, startX, startY, endX, endY;
+        for (var i = 0; i < shape.points.length-2; i++) {
+            x1 = shape.points[i].x;
+            y1 = shape.points[i].y;
+            x2 = shape.points[i + 1].x;
+            y2 = shape.points[i + 1].y;
+            startX = Math.min(x1, x2);
+            startY = Math.min(y1, y2);
+            endX = Math.max(x1, x2);
+            endY = Math.max(y1, y2);
+
+            if ((mx >= startX && mx <= endX) && (my >= startY && my <= endY)) {
+                return true;
+            }
+        }
+        return false;
     }
     else {
         var startX = Math.min(shape.x, shape.endX);

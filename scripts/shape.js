@@ -13,4 +13,11 @@ class Shape {
         this.endX = x;
         this.endY = y;
     }
+
+    move(offsetX, offsetY) {
+        this.x += offsetX;
+        this.y += offsetY;
+        this.endX += offsetX;
+        this.endY += offsetY;
+    }
 }

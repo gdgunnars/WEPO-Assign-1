@@ -21,7 +21,7 @@ class Pen extends Shape {
         context.lineCap = "round";
 
         if (this.fill === "Fill") {
-            context.shadowBlur = this.lineWidth * 3;
+            context.shadowBlur = this.lineWidth * 4;
             context.shadowColor = this.glowColor;
         }
         else {
@@ -52,6 +52,15 @@ class Pen extends Shape {
             context.stroke();
             context.shadowBlur = 0;
             context.closePath();
+        }
+    }
+
+    move(offsetX, offsetY) {
+        this.x += offsetX;
+        this.y += offsetY;
+        for (var i = 0; i < this.points.length; i++) {
+            this.points[i].x += offsetX;
+            this.points[i].y += offsetY;
         }
     }
 }
