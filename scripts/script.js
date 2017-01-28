@@ -98,21 +98,11 @@ $('#button_save').on('click', function() {
 
 $('#button_open').on('click', function() {
     var url = "http://localhost:3000/api/drawings";
-      /*for (int i = 0; i < data.length; i++){
-
-          //alert( "Data Loaded: " + data[0]['title']);
-      }*/
-
-
-      $.get(url, function(data, status){
-          for (var i = 0; i < data.length; i++){
-              console.log(data[i]['title']);
-          }
-      });
-});
-
-$("button").click(function(){
-
+    $.get(url, function(data, status){
+      for (var i = 0; i < data.length; i++){
+          console.log(data[i]['title']);
+      }
+    });
 });
 
 $('input[type=radio][name=fill]').on('change', function() {
@@ -127,7 +117,6 @@ $('input[type=radio][name=fill]').on('change', function() {
             break;
     }
 })
-
 
 $("#colorpicker_border, #colorpicker_fill").spectrum({
     color: "#000",
@@ -201,7 +190,6 @@ $("#mainCanvas").on("mousedown", function(e) {
     }
 
     if(!dragging) {
-
         if (settings.nextShape === "Circle") {
             shape = new Circle(x, y, settings.nextBorderColor, settings.nextFillColor,
                                      settings.fill, settings.lineWidth, "Circle");
@@ -289,7 +277,6 @@ function setFill(fill) {
 }
 
 function clearCanvas() {
-
     settings.discarded = settings.shapes.slice();
     settings.shapes = [];
     var context = settings.canvasObj.getContext("2d");
@@ -302,7 +289,6 @@ function undo() {
     }
     console.log("undo");
     drawAll();
-
 }
 
 function redo() {
@@ -322,7 +308,6 @@ function drawAll() {
 
 
 function hitTest(shape, mx, my) {
-
     if (shape.type === "Circle") {
         var dx = mx - shape.centerX;
         var dy = my - shape.centerY;
