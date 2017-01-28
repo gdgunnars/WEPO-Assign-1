@@ -1,9 +1,15 @@
 class Text {
-    constructor(x, y, color) {
-        // TODO: do stuff
+    constructor(x, y, text, color, font) {
+        this.x = x;
+        this.y = y;
+        this.text = text;
+        this.color = (color === undefined) ? "black" : color;
+        this.font = (font === undefined) ? "20px Courier New" : font;
     }
 
     draw(context) {
-        // TODO: draw text
+        context.font = this.font;
+        context.strokeStyle = this.color;
+        context.strokeText(this.text, this.x, this.y);
     }
 }
