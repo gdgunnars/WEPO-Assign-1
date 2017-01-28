@@ -22,7 +22,7 @@ class Rectangle extends Shape {
         context.stroke();
     }
 
-    move(context, offsetX, offsetY) {
+    move(offsetX, offsetY) {
         this.x += offsetX;
         this.y += offsetY;
         this.endX += offsetX;

@@ -225,8 +225,8 @@ $("#colorpicker_border, #colorpicker_fill").spectrum({
         "rgb(12, 52, 61)", "rgb(28, 69, 135)", "rgb(7, 55, 99)", "rgb(32, 18, 77)", "rgb(76, 17, 48)"]
     ],
     change: function(color) {
-        console.log(color.toHexString());
-        console.log(this.id);
+        //console.log(color.toHexString());
+        //console.log(this.id);
         setColor(color.toHexString(), this.id);
     }
 });
@@ -244,16 +244,17 @@ $("#mainCanvas").on("mousedown", function(e) {
     settings.lastMY = y;
 
     if (settings.currentTool !== "DrawTool") {
+        // Find shape on highest layer that is under cursor.
         var dragging = false;
+        var highestIndex = -1;
         for (var i = settings.shapes.length-1; i >= 0; i--) {
+            console.log(i)
             if (hitTest(settings.shapes[i], x, y)) {
                 dragging = true;
                 settings.currentShape = settings.shapes[i];
-                console.log("Setting hightest index:", i);
                 break;
             }
         }
-
     }
     else {
         if (settings.nextShape === "Circle") {
@@ -297,15 +298,15 @@ $("#mainCanvas").on("mousemove", function(e) {
     if (settings.currentShape !== undefined && settings.currentTool === "MoveTool") {
         var offsetMX = x - settings.lastMX;
         var offsetMY = y - settings.lastMY;
-        /*if(isNaN(offsetMX)) {
+        if(isNaN(offsetMX)) {
             offsetMX = 0;
         }
         if(isNaN(offsetMY)) {
             offsetMY = 0;
-        }*/
+        }
         settings.lastMX = x;
         settings.lastMY = y;
-        settings.currentShape.move(context, offsetMX, offsetMY);
+        settings.currentShape.move(offsetMX, offsetMY);
         drawAll();
     }
     else if (settings.currentShape !== undefined && settings.currentTool === "DrawTool") {
@@ -329,21 +330,25 @@ $("#mainCanvas").on("mouseup", function(e) {
     var y = c.y;
 
     if (settings.currentShape !== undefined ) {
-        settings.currentShape.setEnd(x, y);
+
         if (settings.currentTool === "DrawTool") {
             settings.shapes.push(settings.currentShape);
         }
+        if (settings.currentTool === "DrawTool" || settings.currentTool === "EditTool") {
+            settings.currentShape.setEnd(x, y);
+        }
 
         console.log(settings.shapes);
+        settings.currentShape = undefined;
     }
 
-    settings.currentShape = undefined;
+
 });
-/*
+
 $('#mainCanvas').on("mouseleave", function(e) {
     var e = $.Event( "mouseup", { which: 1 } );
     $("#mainCanvas").trigger(e);
-});*/
+});
 
 function getRelativeCoords(event) {
     return { x: event.offsetX || event.layerX, y: event.offsetY || event.layerY };
