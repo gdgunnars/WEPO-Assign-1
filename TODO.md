@@ -1,4 +1,4 @@
-### TODO list for Project1
+# TODO list for Project1
 
 ## Text Box
 
@@ -12,8 +12,8 @@
 
 ## Default pen size sensible
 
-# 4 basic colors readily available
+### 4 basic colors readily available
 
-# More advanced undo / redo
+### More advanced undo / redo
 
-# Math formulas
+### Math formulas
