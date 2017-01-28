@@ -72,9 +72,7 @@ $('#button_redo').on('click', function() {
     redo();
 });
 
-$('#button_upload').on('click', function() {
-
-
+$('#button_save').on('click', function() {
     var title = prompt("Enter drawing name", "drawing");
 
     if (title != undefined) {
@@ -98,6 +96,24 @@ $('#button_upload').on('click', function() {
     }
 });
 
+$('#button_open').on('click', function() {
+    var url = "http://localhost:3000/api/drawings";
+      /*for (int i = 0; i < data.length; i++){
+
+          //alert( "Data Loaded: " + data[0]['title']);
+      }*/
+
+
+      $.get(url, function(data, status){
+          for (var i = 0; i < data.length; i++){
+              console.log(data[i]['title']);
+          }
+      });
+});
+
+$("button").click(function(){
+
+});
 
 $('input[type=radio][name=fill]').on('change', function() {
     switch ($(this).val()) {
@@ -161,7 +177,6 @@ $("#colorpicker_border, #colorpicker_fill").spectrum({
     }
 });
 
-
 $("#mainCanvas").on("mousedown", function(e) {
     e.preventDefault();
 
@@ -200,7 +215,6 @@ $("#mainCanvas").on("mousedown", function(e) {
     shape.draw(context);
 });
 
-
 $("#mainCanvas").on("mousemove", function(e) {
     var context = settings.canvasObj.getContext("2d");
     var rect = settings.canvasObj.getBoundingClientRect();
@@ -216,7 +230,6 @@ $("#mainCanvas").on("mousemove", function(e) {
         settings.currentShape.draw(context);
     }
 });
-
 
 $("#mainCanvas").on("mouseup", function(e) {
     var context = settings.canvasObj.getContext("2d");
@@ -235,21 +248,17 @@ $("#mainCanvas").on("mouseup", function(e) {
     settings.currentShape = undefined;
 });
 
-
 function getRelativeCoords(event) {
     return { x: event.offsetX || event.layerX, y: event.offsetY || event.layerY };
 }
-
 
 function setShape(shape) {
     settings.nextShape = shape;
 }
 
-
 function setWidth(lwidth) {
     settings.lineWidth = lwidth;
 }
-
 
 function setColor(color, id) {
     if (id === "colorpicker_border"){
@@ -259,7 +268,6 @@ function setColor(color, id) {
         settings.nextFillColor = color;
     }
 }
-
 
 function setFill(fill) {
     settings.fill = fill;
@@ -288,8 +296,6 @@ function redo() {
     }
     drawAll();
 }
-
-
 
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
