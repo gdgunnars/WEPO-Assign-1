@@ -1,6 +1,6 @@
 class Line extends Shape {
-    constructor(x, y, color, lineWidth) {
-        super(x, y, color, lineWidth);
+    constructor(x, y, color, lineWidth, type) {
+        super(x, y, color, lineWidth, type);
     }
 
     draw(context) {

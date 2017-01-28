@@ -145,32 +145,47 @@ $("#mainCanvas").on("mousedown", function(e) {
     var x = c.x;
     var y = c.y;
 
-    if (settings.nextShape === "Circle") {
-        shape = new Circle(x, y, settings.nextBorderColor, settings.nextFillColor,
-                                 settings.fill, settings.lineWidth);
-    }
-    else if (settings.nextShape === "Rectangle") {
-        shape = new Rectangle(x, y, settings.nextBorderColor, settings.nextFillColor,
-                                    settings.fill, settings.lineWidth);
-    }
-    else if (settings.nextShape === "Pen") {
-        console.log(settings.fill);
-        shape = new Pen(x, y, settings.nextBorderColor, settings.nextFillColor,
-                              settings.fill, settings.lineWidth);
-    }
-    else if (settings.nextShape === "Line") {
-        shape = new Line(x, y, settings.nextBorderColor, settings.lineWidth);
-    }
-    else if (settings.nextShape === "Text") {
-        shape = new Text(x, y, settings.nextBorderColor);
-    }
-    else if (settings.nextShape === "SprayCan") {
-        shape = new SprayCan(x, y, settings.nextBorderColor, settings.lineWidth);
+    var dragging = false;
+    var highestIndex = -1;
+    for (var i = settings.shapes.length-1; i >= 0; i--) {
+        if (hitTest(settings.shapes[i], x, y)) {
+            dragging = true;
+            if (i > highestIndex) {
+                console.log("Setting hightest index:", i);
+                highestIndex = i;
+            }
+            break;
+        }
     }
 
-    settings.currentShape = shape;
+    if(!dragging) {
 
-    shape.draw(context);
+        if (settings.nextShape === "Circle") {
+            shape = new Circle(x, y, settings.nextBorderColor, settings.nextFillColor,
+                                     settings.fill, settings.lineWidth, "Circle");
+        }
+        else if (settings.nextShape === "Rectangle") {
+            shape = new Rectangle(x, y, settings.nextBorderColor, settings.nextFillColor,
+                                        settings.fill, settings.lineWidth, "Rectangle");
+        }
+        else if (settings.nextShape === "Pen") {
+            console.log(settings.fill);
+            shape = new Pen(x, y, settings.nextBorderColor, settings.nextFillColor,
+                                  settings.fill, settings.lineWidth, "Pen");
+        }
+        else if (settings.nextShape === "Line") {
+            shape = new Line(x, y, settings.nextBorderColor, settings.lineWidth, "Line");
+        }
+        else if (settings.nextShape === "Text") {
+            shape = new Text(x, y, settings.nextBorderColor);
+        }
+        else if (settings.nextShape === "SprayCan") {
+            shape = new SprayCan(x, y, settings.nextBorderColor, settings.lineWidth, "SprayCan");
+        }
+
+        settings.currentShape = shape;
+        shape.draw(context);
+    }
 });
 
 
@@ -261,11 +276,29 @@ function redo() {
 }
 
 
-
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
     context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
     for (var i = 0; i < settings.shapes.length; i++) {
         settings.shapes[i].draw(context);
     }
+}
+
+
+function hitTest(shape, mx, my) {
+
+    if (shape.type === "Circle") {
+        var dx = mx - shape.centerX;
+        var dy = my - shape.centerY;
+        return ((dx * dx) / (shape.radiusX * shape.radiusX) + (dy * dy) / (shape.radiusY * shape.radiusY) <= 1);
+    }
+    else {
+        var startX = Math.min(shape.x, shape.endX);
+        var startY = Math.min(shape.y, shape.endY);
+        var endX = Math.max(shape.x, shape.endX);
+        var endY = Math.max(shape.y, shape.endY);
+
+        return ((mx >= startX && mx <= endX) && (my >= startY && my <= endY));
+    }
+
 }
