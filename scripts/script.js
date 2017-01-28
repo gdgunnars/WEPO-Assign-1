@@ -3,6 +3,9 @@ var settings = {
     nextShape: "Pen",
     nextBorderColor: "#000",
     nextFillColor: "#000",
+    font: undefined,
+    fontSize: undefined,
+    text: "",
     currentShape: undefined,
     shapes: [],
     discarded: [],
@@ -54,6 +57,10 @@ $('input[type=radio][name=shape]').on('change', function() {
         case 'SprayCan':
             console.log("Set shape to SprayCan");
             setShape("SprayCan");
+            break;
+        case 'Text':
+            console.log("Set shape to Text");
+            setShape("Text");
             break;
     }
 });
@@ -207,7 +214,9 @@ $("#mainCanvas").on("mousedown", function(e) {
             shape = new Line(x, y, settings.nextBorderColor, settings.lineWidth, "Line");
         }
         else if (settings.nextShape === "Text") {
-            shape = new Text(x, y, settings.nextBorderColor);
+            settings.text = prompt("Enter your text here");
+            shape = new Text(x, y, settings.nextFillColor, settings.text, settings.type, settings.fontSize, settings.font);
+            settings.shapes.push(shape);
         }
         else if (settings.nextShape === "SprayCan") {
             shape = new SprayCan(x, y, settings.nextBorderColor, settings.lineWidth, "SprayCan");
@@ -228,7 +237,6 @@ $("#mainCanvas").on("mousemove", function(e) {
 
     if (settings.currentShape !== undefined) {
         settings.currentShape.setEnd(x, y);
-
         drawAll();
         settings.currentShape.draw(context);
     }
@@ -241,11 +249,10 @@ $("#mainCanvas").on("mouseup", function(e) {
     var c = getRelativeCoords(e);
     var x = c.x;
     var y = c.y;
-
+    console.log(settings.currentShape);
     if (settings.currentShape !== undefined) {
         settings.currentShape.setEnd(x, y);
         settings.shapes.push(settings.currentShape);
-        console.log(settings.shapes);
     }
 
     settings.currentShape = undefined;
