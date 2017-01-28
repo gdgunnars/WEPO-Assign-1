@@ -1,6 +1,6 @@
 class Pen extends Shape {
-    constructor(x, y, borderColor, glowColor, fill, lineWidth) {
-        super(x, y, borderColor, lineWidth);
+    constructor(x, y, borderColor, glowColor, fill, lineWidth, type) {
+        super(x, y, borderColor, lineWidth, type);
         this.points = [];
         this.glowColor = glowColor;
         this.fill = fill;

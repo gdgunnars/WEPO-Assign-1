@@ -1,6 +1,6 @@
 class Rectangle extends Shape {
-    constructor(x, y, borderColor, fillColor, fill, lineWidth) {
-        super(x, y, borderColor, lineWidth);
+    constructor(x, y, borderColor, fillColor, fill, lineWidth, type) {
+        super(x, y, borderColor, lineWidth, type);
         this.fillColor = fillColor;
         this.fill = fill;
     }
@@ -20,4 +20,5 @@ class Rectangle extends Shape {
         context.rect(this.x, this.y, height, width);
         context.stroke();
     }
+
 }
