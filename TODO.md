@@ -4,8 +4,12 @@
 
 ## Get drawings from server
 
-## Fix looks
+## Fix looks / add bootstrap theme
 
 ## Move text
 
-### 4 basic colors readily available
+## Fix strange undo/redo with delete and clear canvas
+
+## 4 basic colors readily available
+
+## Check consistency in code
