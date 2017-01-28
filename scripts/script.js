@@ -93,6 +93,10 @@ $('input[type=radio][name=tool]').on('change', function() {
             console.log("Set tool to Color Change");
             setTool("ColorTool");
             break;
+        case 'DeleteTool':
+            console.log("Set tool to Delete");
+            setTool("DeleteTool");
+            break;
     }
 })
 
@@ -122,57 +126,61 @@ $('input[type=radio][name=shape]').on('change', function() {
 });
 
 $(document).keypress(function(e) {
-    console.log(e.which);
     // Ctrl + Z
-    if(e.which === 26){
+    if (e.keyCode === 26){
         undo();
     }
     // Ctrl + Y
-    if(e.which === 25){
+    if (e.keyCode === 25){
         redo();
     }
-    if (e.which === 100) {
-        $("#drawtool").prop("checked", true)
+    if (e.keyCode === 68) {
+        $("#deletetool").prop("checked", true);
+        console.log("Set tool to Delete");
+        setTool("DeleteTool");
+    }
+    if (e.keyCode === 100) {
+        $("#drawtool").prop("checked", true);
         console.log("Set tool to Draw");
         setTool("DrawTool");
     }
-    if (e.which === 101) {
-        $("#edittool").prop("checked", true)
+    if (e.keyCode === 101) {
+        $("#edittool").prop("checked", true);
         console.log("Set tool to Edit");
         setTool("EditTool");
     }
-    if (e.which === 109) {
-        $("#movetool").prop("checked", true)
+    if (e.keyCode === 109) {
+        $("#movetool").prop("checked", true);
         console.log("Set tool to Move");
         setTool("MoveTool");
     }
-    if (e.which === 98) {
-        $("#colortool").prop("checked", true)
+    if (e.keyCode === 98) {
+        $("#colortool").prop("checked", true);
         console.log("Set tool to Color change");
         setTool("ColorTool");
     }
-    if (e.which === 112) {
-        $("#pen").prop("checked", true)
+    if (e.keyCode === 112) {
+        $("#pen").prop("checked", true);
         console.log("Set shape to Pen");
         setShape("Pen");
     }
-    if (e.which === 108) {
-        $("#line").prop("checked", true)
+    if (e.keyCode === 108) {
+        $("#line").prop("checked", true);
         console.log("Set shape to Line");
         setShape("Line");
     }
-    if (e.which === 114) {
-        $("#rect").prop("checked", true)
+    if (e.keyCode === 114) {
+        $("#rect").prop("checked", true);
         console.log("Set shape to Rectangle");
         setShape("Rectangle");
     }
-    if (e.which === 99) {
-        $("#circle").prop("checked", true)
+    if (e.keyCode === 99) {
+        $("#circle").prop("checked", true);
         console.log("Set shape to Circle");
         setShape("Circle");
     }
-    if (e.which === 116) {
-        $("#text").prop("checked", true)
+    if (e.keyCode === 116) {
+        $("#text").prop("checked", true);
         console.log("Set shape to Text");
         setShape("Text");
     }
@@ -180,7 +188,6 @@ $(document).keypress(function(e) {
 });
 
 $('#button_clear').on('click', function() {
-    var txt;
     var r = confirm("Press OK to clear the entire canvas.");
     if (r == true) {
         clearCanvas();
@@ -396,6 +403,15 @@ $("#mainCanvas").on("mouseup", function(e) {
             console.log("Coloring");
             drawAll();
         }
+        if (settings.currentTool === "DeleteTool") {
+            var r = confirm("Press OK to delete ".concat(settings.currentShape.type));
+            if (r == true) {
+                removeCurrentShape();
+                drawAll();
+            } else {
+                return;
+            }
+        }
 
         console.log(settings.shapes);
         settings.currentShape = undefined;
@@ -458,7 +474,6 @@ function undo() {
     if(settings.shapes.length > 0) {
         settings.discarded.push(settings.shapes.pop());
     }
-    console.log("undo");
     drawAll();
 }
 
@@ -474,6 +489,15 @@ function drawAll() {
     context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
     for (var i = 0; i < settings.shapes.length; i++) {
         settings.shapes[i].draw(context);
+    }
+}
+
+function removeCurrentShape() {
+    for (var i = settings.shapes.length-1; i >= 0; i--) {
+        if (settings.shapes[i] === settings.currentShape) {
+            settings.discarded.push(settings.shapes[i]);
+            settings.shapes.splice(i, 1);
+        }
     }
 }
 
