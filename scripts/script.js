@@ -73,15 +73,55 @@ $('input[type=radio][name=shape]').on('change', function() {
             console.log("Set shape to Line");
             setShape("Line");
             break;
-        case 'SprayCan':
-            console.log("Set shape to SprayCan");
-            setShape("SprayCan");
-            break;
         case 'Text':
             console.log("Set shape to Text");
             setShape("Text");
             break;
     }
+});
+
+$(document).keypress(function(e) {
+    if (e.which === 100) {
+        $("#drawtool").prop("checked", true)
+        console.log("Set tool to Draw");
+        setTool("DrawTool");
+    }
+    if (e.which === 101) {
+        $("#edittool").prop("checked", true)
+        console.log("Set tool to Edit");
+        setTool("EditTool");
+    }
+    if (e.which === 109) {
+        $("#movetool").prop("checked", true)
+        console.log("Set tool to Move");
+        setTool("MoveTool");
+    }
+    if (e.which === 112) {
+        $("#pen").prop("checked", true)
+        console.log("Set shape to Pen");
+        setShape("Pen");
+    }
+    if (e.which === 108) {
+        $("#line").prop("checked", true)
+        console.log("Set shape to Line");
+        setShape("Line");
+    }
+    if (e.which === 114) {
+        $("#rect").prop("checked", true)
+        console.log("Set shape to Rectangle");
+        setShape("Rectangle");
+    }
+    if (e.which === 99) {
+        $("#circle").prop("checked", true)
+        console.log("Set shape to Circle");
+        setShape("Circle");
+    }
+    if (e.which === 116) {
+        $("#text").prop("checked", true)
+        console.log("Set shape to Text");
+        setShape("Text");
+    }
+
 });
 
 
@@ -302,8 +342,6 @@ $("#mainCanvas").on("mouseup", function(e) {
         console.log(settings.shapes);
         settings.currentShape = undefined;
     }
-
-
 });
 
 $('#mainCanvas').on("mouseleave", function(e) {
