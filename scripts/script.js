@@ -9,7 +9,10 @@ var settings = {
     canvasWidth: 800,
     canvasHeight: 600,
     lineWidth: 1,
-    fill: "NoFill"
+    fill: "NoFill",
+    currentTool: "DrawTool",
+    lastMX: 0,
+    lastMY: 0
 };
 
 $(document).ready(function() {
@@ -32,6 +35,22 @@ $(document).ready(function() {
     });
 });
 
+$('input[type=radio][name=tool]').on('change', function() {
+    switch ($(this).val()) {
+        case 'DrawTool':
+            console.log("Set tool to Draw");
+            setTool("DrawTool");
+            break;
+        case 'MoveTool':
+            console.log("Set tool to Move");
+            setTool("MoveTool");
+            break;
+        case 'EditTool':
+            console.log("Set tool to Edit");
+            setTool("EditTool");
+            break;
+    }
+})
 
 $('input[type=radio][name=shape]').on('change', function() {
     switch($(this).val()) {
@@ -186,21 +205,22 @@ $("#mainCanvas").on("mousedown", function(e) {
     var c = getRelativeCoords(e);
     var x = c.x;
     var y = c.y;
+    settings.lastMX = x;
+    settings.lastMY = y;
 
-    var dragging = false;
-    var highestIndex = -1;
-    for (var i = settings.shapes.length-1; i >= 0; i--) {
-        if (hitTest(settings.shapes[i], x, y)) {
-            dragging = true;
-            if (i > highestIndex) {
+    if (settings.currentTool !== "DrawTool") {
+        var dragging = false;
+        for (var i = settings.shapes.length-1; i >= 0; i--) {
+            if (hitTest(settings.shapes[i], x, y)) {
+                dragging = true;
+                settings.currentShape = settings.shapes[i];
                 console.log("Setting hightest index:", i);
-                highestIndex = i;
+                break;
             }
-            break;
         }
-    }
 
-    if(!dragging) {
+    }
+    else {
 
         if (settings.nextShape === "Circle") {
             shape = new Circle(x, y, settings.nextBorderColor, settings.nextFillColor,
@@ -238,11 +258,30 @@ $("#mainCanvas").on("mousemove", function(e) {
     var x = c.x;
     var y = c.y;
 
-    if (settings.currentShape !== undefined) {
+    if (settings.currentShape !== undefined && settings.currentTool === "MoveTool") {
+        var offsetMX = x - settings.lastMX;
+        var offsetMY = y - settings.lastMY;
+        /*if(isNaN(offsetMX)) {
+            offsetMX = 0;
+        }
+        if(isNaN(offsetMY)) {
+            offsetMY = 0;
+        }*/
+        settings.lastMX = x;
+        settings.lastMY = y;
+        settings.currentShape.move(context, offsetMX, offsetMY);
+        drawAll();
+    }
+    else if (settings.currentShape !== undefined && settings.currentTool === "DrawTool") {
         settings.currentShape.setEnd(x, y);
 
         drawAll();
         settings.currentShape.draw(context);
+    }
+    else if (settings.currentShape !== undefined && settings.currentTool === "EditTool") {
+        settings.currentShape.setEnd(x, y);
+
+        drawAll();
     }
 });
 
@@ -254,21 +293,43 @@ $("#mainCanvas").on("mouseup", function(e) {
     var x = c.x;
     var y = c.y;
 
-    if (settings.currentShape !== undefined) {
+    if (settings.currentShape !== undefined ) {
         settings.currentShape.setEnd(x, y);
-        settings.shapes.push(settings.currentShape);
+        if (settings.currentTool === "DrawTool") {
+            settings.shapes.push(settings.currentShape);
+        }
+
         console.log(settings.shapes);
     }
 
     settings.currentShape = undefined;
 });
+/*
+$('#mainCanvas').on("mouseleave", function(e) {
+    var e = $.Event( "mouseup", { which: 1 } );
+    $("#mainCanvas").trigger(e);
+});*/
 
 function getRelativeCoords(event) {
     return { x: event.offsetX || event.layerX, y: event.offsetY || event.layerY };
 }
 
 function setShape(shape) {
+    settings.movetool = false;
     settings.nextShape = shape;
+}
+
+function setTool(tool) {
+    settings.currentTool = tool;
+    if (tool === "MoveTool") {
+        $('#mainCanvas').css('cursor','move');
+    }
+    else if (tool === "EditTool") {
+        $('#mainCanvas').css('cursor','nwse-resize');
+    }
+    else {
+        $('#mainCanvas').css('cursor','auto');
+    }
 }
 
 function setWidth(lwidth) {
@@ -289,7 +350,6 @@ function setFill(fill) {
 }
 
 function clearCanvas() {
-
     settings.discarded = settings.shapes.slice();
     settings.shapes = [];
     var context = settings.canvasObj.getContext("2d");
@@ -312,10 +372,6 @@ function redo() {
     drawAll();
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 774e8a147dd4cbeb5b1d2e3ab767e77bd45e7d34
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
     context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);

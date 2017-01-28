@@ -6,6 +6,7 @@ class Rectangle extends Shape {
     }
 
     draw(context) {
+
         context.lineWidth = this.lineWidth;
         context.strokeStyle = this.color;
         var height = this.endX - this.x;
@@ -21,4 +22,10 @@ class Rectangle extends Shape {
         context.stroke();
     }
 
+    move(context, offsetX, offsetY) {
+        this.x += offsetX;
+        this.y += offsetY;
+        this.endX += offsetX;
+        this.endY += offsetY;
+    }
 }

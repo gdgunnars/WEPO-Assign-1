@@ -23,7 +23,7 @@
 		<button type="button" id="button_clear">Clear canvas</button> <br  />
 		<button type="button" id="button_undo">Undo</button>
 		<button type="button" id="button_redo">Redo</button> <br  />
-		Tool Selection: <br />
+		Drawing Selection: <br />
 		<input type="radio" name="shape" id="pen" checked="checked" value="Pen">
 		<label for="pen"> Pen </label><br />
 		<input type="radio" name="shape" id="line" value="Line">
@@ -34,14 +34,21 @@
 		<label for="circle"> Circle </label><br />
 		<input type="radio" name="shape" id="spraycan" value="SprayCan">
 		<label for="spraycan"> SprayCan </label><br /> <br />
+		Tool Selection: <br />
+		<input type="radio" name="tool" id="drawtool" checked="checked" value="DrawTool">
+		<label for="drawtool"> Draw </label><br />
+		<input type="radio" name="tool" id="movetool" value="MoveTool">
+		<label for="movetool"> Move </label><br />
+		<input type="radio" name="tool" id="edittool" value="EditTool">
+		<label for="edittool"> Edit </label><br /><br />
 		Fill shape: <br />
 		<input type="radio" name="fill" id="fill" value="Fill">
 		<label for="fill"> Fill / Pen Glow </label><br />
 		<input type="radio" name="fill" id="nofill" checked="checked" value="NoFill">
 		<label for="nofill"> No Fill / No Pen Glow </label><br /><br />
-		Border / Pen Color:
+		Primary Color:
 		<input type='text' id="colorpicker_border"/> <br />
-		Fill / Pen Glow Color:
+		Secondary Color:
 		<input type='text' id="colorpicker_fill"/> <br /><br />
 
 		Line Width:
