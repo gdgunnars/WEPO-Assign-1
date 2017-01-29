@@ -63,13 +63,18 @@
 }
 
 .btn-strech {
-    width: 48px;
-    height: 25px;
+    margin-top: 7px;
+    width: 40px;
+    height: 28px;
     margin-bottom: 10px;
 }
 
 .btn-black {
     background-color: black;
+}
+
+.color_label {
+    margin-top: 9px;
 }
 
 /* CSS Code for radio buttons was found on bootsnipp.com free to use*/
