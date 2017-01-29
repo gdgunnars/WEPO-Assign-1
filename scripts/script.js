@@ -125,7 +125,17 @@ $('input[type=radio][name=shape]').on('change', function() {
 
 $(document).keypress(function(e) {
     if (!settings.inputtingText) {
-
+        // F
+        if (e.keyCode == 102) {
+            if (settings.fill == "NoFill") {
+                setFill("Fill");
+                $("#fill").prop("checked", true);
+            }
+            else {
+                setFill("NoFill");
+                $("#nofill").prop("checked", true);
+            }
+        }
         // Ctrl + Z
         if (e.keyCode === 26){
             undo();
