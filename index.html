@@ -46,7 +46,7 @@
 						<ul class="nav navbar-nav">
 							<li><a href="" id="button_save">Save</a></li>
 							<li><a href="" id="button_save_templ">Save as Template</a></li>
-							<li><a href="#" id="button_open">Import</a></li>
+							<li><a href="#" id="button_open" data-toggle="modal" data-target="#import"> Import</a></li>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Export as <span class="caret"></span></a>
 								<ul class="dropdown-menu">
@@ -55,7 +55,7 @@
 									<li><a href="#" id="button_export_JSON">JSON</a></li>
 								</ul>
 							</li>
-							<li><a href="https://github.com/hlynurstef/WEPO-Assign-1/blob/master/README.md">About</a></li>
+							<li><a href="https://github.com/hlynurstef/WEPO-Assign-1/blob/master/README.md" target="_blank">About</a></li>
 						</ul>
 
 						<ul class="nav navbar-nav navbar-right">
@@ -166,6 +166,25 @@
 				<div id="font" class="col-md-6"><label for="font-select">Font: </label></div>
 				<div id="fontsize" class="col-md-6"><label for="fontsize-select">Font Size: </label></div>
 
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="import" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Import JSON File</h4>
+				</div>
+				<div class="modal-body">
+					<input type="file" id="fileinput"/>
+					<input type='button' id='btnLoad' value='Load' onclick='handleFileSelect();'>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
 			</div>
 		</div>
 	</div>
