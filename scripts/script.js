@@ -136,11 +136,6 @@ $(document).keypress(function(e) {
                 $("#nofill").prop("checked", true);
             }
         }
-        if (e.keyCode === 107) {
-            console.log("shapes:", settings.shapes);
-            console.log("undo:", settings.undo);
-            console.log("redo:", settings.redo);
-        }
         // Ctrl + Z
         if (e.keyCode === 26){
             undo();
@@ -406,7 +401,6 @@ $("#mainCanvas").on("mousedown", function(e) {
                     shape = new Text(settings.textX, settings.textY, settings.nextPrimaryColor, settings.nextSecondaryColor,
                                     text, "Text", settings.fontSize, settings.font, context);
                     settings.shapes.push(shape);
-                    console.log(settings.shapes);
                 }
                 $('#text_input').val('');
             }
