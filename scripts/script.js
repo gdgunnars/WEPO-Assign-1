@@ -5,17 +5,17 @@ var settings = {
     nextSecondaryColor: "#000",
     font: "Arial",
     fontSize: "12px ",
-    text: "",
     currentShape: undefined,
     shapes: [],
     discarded: [],
-    canvasWidth: 800,
-    canvasHeight: 600,
     lineWidth: 1,
     fill: "NoFill",
     currentTool: "DrawTool",
     lastMX: 0,
-    lastMY: 0
+    lastMY: 0,
+    inputtingText: false,
+    textX: 0,
+    texty: 0
 };
 
 $(document).ready(function() {
@@ -100,7 +100,7 @@ $('input[type=radio][name=tool]').on('change', function() {
             setTool("DeleteTool");
             break;
     }
-})
+});
 
 $('input[type=radio][name=shape]').on('change', function() {
     switch($(this).val()) {
@@ -128,65 +128,66 @@ $('input[type=radio][name=shape]').on('change', function() {
 });
 
 $(document).keypress(function(e) {
-    // Ctrl + Z
-    if (e.keyCode === 26){
-        undo();
+    if (!settings.inputtingText) {
+        // Ctrl + Z
+        if (e.keyCode === 26){
+            undo();
+        }
+        // Ctrl + Y
+        if (e.keyCode === 25){
+            redo();
+        }
+        if (e.keyCode === 68) {
+            $("#deletetool").prop("checked", true);
+            console.log("Set tool to Delete");
+            setTool("DeleteTool");
+        }
+        if (e.keyCode === 100) {
+            $("#drawtool").prop("checked", true);
+            console.log("Set tool to Draw");
+            setTool("DrawTool");
+        }
+        if (e.keyCode === 101) {
+            $("#edittool").prop("checked", true);
+            console.log("Set tool to Edit");
+            setTool("EditTool");
+        }
+        if (e.keyCode === 109) {
+            $("#movetool").prop("checked", true);
+            console.log("Set tool to Move");
+            setTool("MoveTool");
+        }
+        if (e.keyCode === 98) {
+            $("#colortool").prop("checked", true);
+            console.log("Set tool to Color change");
+            setTool("ColorTool");
+        }
+        if (e.keyCode === 112) {
+            $("#pen").prop("checked", true);
+            console.log("Set shape to Pen");
+            setShape("Pen");
+        }
+        if (e.keyCode === 108) {
+            $("#line").prop("checked", true);
+            console.log("Set shape to Line");
+            setShape("Line");
+        }
+        if (e.keyCode === 114) {
+            $("#rect").prop("checked", true);
+            console.log("Set shape to Rectangle");
+            setShape("Rectangle");
+        }
+        if (e.keyCode === 99) {
+            $("#circle").prop("checked", true);
+            console.log("Set shape to Circle");
+            setShape("Circle");
+        }
+        if (e.keyCode === 116) {
+            $("#text").prop("checked", true);
+            console.log("Set shape to Text");
+            setShape("Text");
+        }
     }
-    // Ctrl + Y
-    if (e.keyCode === 25){
-        redo();
-    }
-    if (e.keyCode === 68) {
-        $("#deletetool").prop("checked", true);
-        console.log("Set tool to Delete");
-        setTool("DeleteTool");
-    }
-    if (e.keyCode === 100) {
-        $("#drawtool").prop("checked", true);
-        console.log("Set tool to Draw");
-        setTool("DrawTool");
-    }
-    if (e.keyCode === 101) {
-        $("#edittool").prop("checked", true);
-        console.log("Set tool to Edit");
-        setTool("EditTool");
-    }
-    if (e.keyCode === 109) {
-        $("#movetool").prop("checked", true);
-        console.log("Set tool to Move");
-        setTool("MoveTool");
-    }
-    if (e.keyCode === 98) {
-        $("#colortool").prop("checked", true);
-        console.log("Set tool to Color change");
-        setTool("ColorTool");
-    }
-    if (e.keyCode === 112) {
-        $("#pen").prop("checked", true);
-        console.log("Set shape to Pen");
-        setShape("Pen");
-    }
-    if (e.keyCode === 108) {
-        $("#line").prop("checked", true);
-        console.log("Set shape to Line");
-        setShape("Line");
-    }
-    if (e.keyCode === 114) {
-        $("#rect").prop("checked", true);
-        console.log("Set shape to Rectangle");
-        setShape("Rectangle");
-    }
-    if (e.keyCode === 99) {
-        $("#circle").prop("checked", true);
-        console.log("Set shape to Circle");
-        setShape("Circle");
-    }
-    if (e.keyCode === 116) {
-        $("#text").prop("checked", true);
-        console.log("Set shape to Text");
-        setShape("Text");
-    }
-
 });
 
 $('#button_clear').on('click', function() {
@@ -334,16 +335,33 @@ $("#mainCanvas").on("mousedown", function(e) {
             shape = new Line(x, y, settings.nextPrimaryColor, settings.nextSecondaryColor, settings.lineWidth, "Line");
         }
         else if (settings.nextShape === "Text") {
-            settings.text = prompt("Enter your text here");
-            shape = new Text(x, y, settings.nextPrimaryColor, settings.nextSecondaryColor, settings.text, settings.type, settings.fontSize, settings.font);
-            settings.shapes.push(shape);
+            if (!settings.inputtingText) {
+                settings.inputtingText = true;
+                $('#text_input').css({"visibility": "visible", "left": e.pageX, "top": e.pageY});
+                settings.textX = x;
+                settings.textY = y;
+            }
+            else {
+                settings.inputtingText = false;
+                $('#text_input').css({"visibility": "hidden"});
+                var text = $('#text_input').val();
+                if (text !== '') {
+                    shape = new Text(settings.textX, settings.textY, settings.nextPrimaryColor, settings.nextSecondaryColor,
+                                    text, "Text", settings.fontSize, settings.font, context);
+                    settings.shapes.push(shape);
+                    console.log(settings.shapes);
+                }
+                $('#text_input').val('');
+            }
         }
         else if (settings.nextShape === "SprayCan") {
             shape = new SprayCan(x, y, settings.nextPrimaryColor, settings.lineWidth, "SprayCan");
         }
 
-        settings.currentShape = shape;
-        shape.draw(context);
+        if (shape !== undefined) {
+            settings.currentShape = shape;
+            shape.draw(context);
+        }
     }
 });
 
@@ -370,13 +388,16 @@ $("#mainCanvas").on("mousemove", function(e) {
         drawAll();
     }
     else if (settings.currentShape !== undefined && settings.currentTool === "DrawTool") {
-        settings.currentShape.setEnd(x, y);
+        if (settings.currentShape.type !== "Text") {
+            settings.currentShape.setEnd(x, y);
+        }
         drawAll();
         settings.currentShape.draw(context);
     }
     else if (settings.currentShape !== undefined && settings.currentTool === "EditTool") {
-        settings.currentShape.setEnd(x, y);
-        console.log(shapes);
+        if (settings.currentShape.type !== "Pen" && settings.currentShape.type !== "Text") {
+            settings.currentShape.setEnd(x, y);
+        }
         drawAll();
     }
 });
@@ -392,10 +413,14 @@ $("#mainCanvas").on("mouseup", function(e) {
     if (settings.currentShape !== undefined ) {
 
         if (settings.currentTool === "DrawTool") {
-            settings.shapes.push(settings.currentShape);
+            if (settings.currentShape.type !== "Text") {
+                settings.shapes.push(settings.currentShape);
+            }
         }
         if (settings.currentTool === "DrawTool" || settings.currentTool === "EditTool") {
-            settings.currentShape.setEnd(x, y);
+            if (settings.currentShape.type !== "Pen" && settings.currentShape.type !== "Text") {
+                settings.currentShape.setEnd(x, y);
+            }
         }
         if (settings.currentTool === "ColorTool") {
             setCurrentShapeToClicked(context, x, y);

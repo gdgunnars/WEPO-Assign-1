@@ -1,30 +1,45 @@
-class Text  {
-    constructor(x, y, primaryColor, secondaryColor, text, type, size, font) {
-        this.endX = undefined;
-        this.endY = undefined;
-        this.x = x;
-        this.y = y;
-        this.primaryColor = (primaryColor === undefined) ? "black" : primaryColor;
-        this.secondaryColor = (secondaryColor === undefined) ? "black" : secondaryColor;
-        this.text = text;
-        this.type = type;
-        this.size = (size === undefined) ? "40px " : size;
-        this.font = (font === undefined) ? this.size.concat("Courier New")  : this.size.concat(font);
-        console.log(size);
-        console.log(this.size);
-        console.log(this.font);
+class Text  extends Shape {
+    constructor(x, y, primaryColor, secondaryColor, text, type, size, font, context) {
+        super(x, y, primaryColor, secondaryColor, undefined, type);
+        this.text = text.split('\n');
+        this.size = (size === undefined) ? "12px " : size;
+        this.font = (font === undefined) ? this.size.concat("Courier New") : this.size.concat(font);
+        this.width = this.maxWidth(context);
+        this.y -= parseInt(this.size);
+        this.endX = this.x + this.width;
+        this.endY = this.y + (parseInt(this.size) * this.text.length-1);
     }
 
     draw(context) {
         context.beginPath();
         context.font = this.font;
         context.fillStyle = this.primaryColor;
-        context.fillText(this.text, this.x, this.y);
+        for (var i = 0; i < this.text.length; i++) {
+            context.fillText(this.text[i], this.x, this.y + (parseInt(this.size) * i) + parseInt(this.size));
+        }
+        /*
+        var height = this.endX - this.x;
+        var width = this.endY - this.y;
+        context.strokeStyle = "#F00";
+        context.rect(this.x, this.y, height, width);
+        context.stroke();*/
     }
 
     setEnd(x, y) {
-        this.endX = 0;
-        this.endX = 0;
+        this.endX = this.x + this.width;
+        this.endY = this.textY + parseInt(this.size);
+    }
+
+    maxWidth(context) {
+        context.font = this.font;
+        var w = 0;
+        for (var i = 0; i < this.text.length; i++) {
+            var lineWidth = parseInt(context.measureText(this.text[i]).width);
+            if (lineWidth > w) {
+                w = lineWidth;
+            }
+        }
+        return w;
     }
 
     move(offsetX, offsetY) {
