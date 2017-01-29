@@ -145,6 +145,8 @@
 				</div>
 			</div>
 			<div class="col-md-12">
+				<label for="colorpicker_primary" class="color_label">Primary Color:</label> <br />
+				<input type='text' id="colorpicker_primary"/>
 				<div class="btn-group" role="group" aria-label="...">
 					<button title="Black" type="button" class="btn btn-black btn-strech" onclick="setColor('#000', 'colorpicker_primary')"></button>
 					<button title="Red" type="button" class="btn btn-danger btn-strech" onclick="setColor('#d9534f', 'colorpicker_primary')"></button>
@@ -153,11 +155,19 @@
 					<button title="Orange" type="button" class="btn btn-warning btn-strech" onclick="setColor('#f0ad4e', 'colorpicker_primary')"></button>
 					<button title="White" type="button" class="btn btn-default btn-strech" onclick="setColor('#ffffff', 'colorpicker_primary')"></button>
 					<button title="Blue" type="button" class="btn btn-primary btn-strech" onclick="setColor('#337ab7', 'colorpicker_primary')"></button>
-				</div><br>
-				<input type='text' id="colorpicker_primary"/>
-				<label for="colorpicker_primary">Primary Color</label> &nbsp;
+				</div><br />
+
+				<label for="colorpicker_secondary" class="color_label">Secondary Color:</label><br />
 				<input type='text' id="colorpicker_secondary"/>
-				<label for="colorpicker_secondary">Secondary Color</label><br /><br />
+				<div class="btn-group" role="group" aria-label="...">
+					<button title="Black" type="button" class="btn btn-black btn-strech" onclick="setColor('#000', 'colorpicker_secondary')"></button>
+					<button title="Red" type="button" class="btn btn-danger btn-strech" onclick="setColor('#d9534f', 'colorpicker_secondary')"></button>
+					<button title="Light Blue" type="button" class="btn btn-info btn-strech" onclick="setColor('#5bc0de', 'colorpicker_secondary')"></button>
+					<button title="Green" type="button" class="btn btn-success btn-strech" onclick="setColor('#5cb85c', 'colorpicker_secondary')"></button>
+					<button title="Orange" type="button" class="btn btn-warning btn-strech" onclick="setColor('#f0ad4e', 'colorpicker_secondary')"></button>
+					<button title="White" type="button" class="btn btn-default btn-strech" onclick="setColor('#ffffff', 'colorpicker_secondary')"></button>
+					<button title="Blue" type="button" class="btn btn-primary btn-strech" onclick="setColor('#337ab7', 'colorpicker_secondary')"></button>
+				</div><br />
 			</div>
 			<div class="col-md-12 zero-padding">
 				<div id="linewidth" class="col-md-4"><label for="linewidth-select"> Line Width: </label></div>
