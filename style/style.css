@@ -153,3 +153,12 @@
     color: #fff;
     background-color: #5bc0de;
 }
+
+#text_input {
+    visibility: hidden;
+    position: absolute;
+    width: 400px;
+    height: 100px;
+    z-index: 99 !important;
+    white-space: pre-wrap;
+}
