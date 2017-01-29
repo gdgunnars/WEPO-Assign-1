@@ -136,28 +136,38 @@
 				<div class="funkyradio">
 			        <div class="funkyradio-warning">
 						<input type="radio" name="fill" id="nofill" checked="checked" value="NoFill">
-						<label for="nofill"> No Fill / No Pen Glow </label>
+						<label for="nofill"> No Fill / No Pen Glow (f)</label>
 			        </div>
 					<div class="funkyradio-info">
 						<input type="radio" name="fill" id="fill" value="Fill">
-						<label for="fill"> Fill / Pen Glow </label>
+						<label for="fill"> Fill / Pen Glow (f)</label>
 			        </div>
 				</div>
 			</div>
 			<div class="col-md-12">
+				<label for="colorpicker_primary" class="color_label">Primary Color:</label> <br />
+				<input type='text' id="colorpicker_primary"/>
 				<div class="btn-group" role="group" aria-label="...">
-					<button title="Black" type="button" class="btn btn-black btn-strech" onclick="setColor('#000')"></button>
-					<button title="Red" type="button" class="btn btn-danger btn-strech" onclick="setColor('#d9534f')"></button>
-					<button title="Light Blue" type="button" class="btn btn-info btn-strech" onclick="setColor('#5bc0de')"></button>
-					<button title="Green" type="button" class="btn btn-success btn-strech" onclick="setColor('#5cb85c')"></button>
-					<button title="Orange" type="button" class="btn btn-warning btn-strech" onclick="setColor('#f0ad4e')"></button>
-					<button title="White" type="button" class="btn btn-default btn-strech" onclick="setColor('#ffffff')"></button>
-					<button title="Blue" type="button" class="btn btn-primary btn-strech" onclick="setColor('#337ab7')"></button>
-				</div><br>
-				<input type='text' id="colorpicker_border"/>
-				<label for="colorpicker_border">Primary Color</label> &nbsp;
-				<input type='text' id="colorpicker_fill"/>
-				<label for="colorpicker_fill">Secondary Color</label><br /><br />
+					<button title="Black" type="button" class="btn btn-black btn-strech" onclick="setColor('#000', 'colorpicker_primary')"></button>
+					<button title="Red" type="button" class="btn btn-danger btn-strech" onclick="setColor('#d9534f', 'colorpicker_primary')"></button>
+					<button title="Light Blue" type="button" class="btn btn-info btn-strech" onclick="setColor('#5bc0de', 'colorpicker_primary')"></button>
+					<button title="Green" type="button" class="btn btn-success btn-strech" onclick="setColor('#5cb85c', 'colorpicker_primary')"></button>
+					<button title="Orange" type="button" class="btn btn-warning btn-strech" onclick="setColor('#f0ad4e', 'colorpicker_primary')"></button>
+					<button title="White" type="button" class="btn btn-default btn-strech" onclick="setColor('#ffffff', 'colorpicker_primary')"></button>
+					<button title="Blue" type="button" class="btn btn-primary btn-strech" onclick="setColor('#337ab7', 'colorpicker_primary')"></button>
+				</div><br />
+
+				<label for="colorpicker_secondary" class="color_label">Secondary Color:</label><br />
+				<input type='text' id="colorpicker_secondary"/>
+				<div class="btn-group" role="group" aria-label="...">
+					<button title="Black" type="button" class="btn btn-black btn-strech" onclick="setColor('#000', 'colorpicker_secondary')"></button>
+					<button title="Red" type="button" class="btn btn-danger btn-strech" onclick="setColor('#d9534f', 'colorpicker_secondary')"></button>
+					<button title="Light Blue" type="button" class="btn btn-info btn-strech" onclick="setColor('#5bc0de', 'colorpicker_secondary')"></button>
+					<button title="Green" type="button" class="btn btn-success btn-strech" onclick="setColor('#5cb85c', 'colorpicker_secondary')"></button>
+					<button title="Orange" type="button" class="btn btn-warning btn-strech" onclick="setColor('#f0ad4e', 'colorpicker_secondary')"></button>
+					<button title="White" type="button" class="btn btn-default btn-strech" onclick="setColor('#ffffff', 'colorpicker_secondary')"></button>
+					<button title="Blue" type="button" class="btn btn-primary btn-strech" onclick="setColor('#337ab7', 'colorpicker_secondary')"></button>
+				</div><br />
 			</div>
 			<div class="col-md-12 zero-padding">
 				<div id="linewidth" class="col-md-4"><label for="linewidth-select"> Line Width: </label></div>
