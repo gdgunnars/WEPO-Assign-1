@@ -197,6 +197,15 @@ $('#button_redo').on('click', function() {
     redo();
 });
 
+$('#button_export').on('click', function() {
+    var canvas = settings.canvasObj;
+    var ctx = canvas.getContext("2d");
+
+    canvas.toBlob(function(blob) {
+        saveAs(blob, "image.png");
+    })
+});
+
 $('#button_save').on('click', function() {
     var title = prompt("Enter drawing name", "drawing");
 
