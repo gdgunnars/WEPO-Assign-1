@@ -197,13 +197,27 @@ $('#button_redo').on('click', function() {
     redo();
 });
 
-$('#button_export').on('click', function() {
+$('#button_export_PNG').on('click', function() {
     var canvas = settings.canvasObj;
     var ctx = canvas.getContext("2d");
 
     canvas.toBlob(function(blob) {
         saveAs(blob, "image.png");
     })
+});
+
+$('#button_export_JSON').on('click', function() {
+    var canvas = settings.canvasObj;
+    var ctx = canvas.getContext("2d");
+    var drawing = {
+    title: title,
+    content: settings.shapes
+    }
+
+    var text = JSON.stringify(drawing);
+
+    var blob = new Blob(text, {type: "text/plain;charset=utf-8"});
+    saveAs(blob, "drawing.json");
 });
 
 $('#button_save').on('click', function() {
