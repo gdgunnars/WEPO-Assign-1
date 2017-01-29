@@ -560,7 +560,7 @@ function fillPicNav(obj) {
     $("#pic_list").html("");
     $.get(url, function(data, status){
         for (var i = 0; i < data.length; i++){
-            $("#pic_list").append('<li><button class="btn" onclick="getSingleCanvas('+i+')">'+data[i]['title']+'</button></li>');
+            $("#pic_list").append('<li><button type="button" class="btn btn-default" onclick="getSingleCanvas('+i+')">'+data[i]['title']+'</button></li>');
         }
     });
 }
