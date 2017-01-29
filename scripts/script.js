@@ -203,7 +203,7 @@ $('#button_save').on('click', function() {
     if (settings.shapes.length == 0){
         alert("You can't save an empty canvas");
     }
-    else if (title != undefined) {
+    else if (title != null) {
         var drawing = {
         title: title,
         content: settings.shapes
@@ -231,7 +231,7 @@ $('#button_save_templ').on('click', function() {
     if (settings.shapes.length == 0){
         alert("You can't save an empty canvas");
     }
-    else if (title != undefined) {
+    else if (title != null) {
         var drawing = {
         title: title,
         content: settings.shapes
@@ -467,13 +467,8 @@ $("#mainCanvas").on("mouseup", function(e) {
             drawAll();
         }
         if (settings.currentTool === "DeleteTool") {
-            var r = confirm("Press OK to delete ".concat(settings.currentShape.type));
-            if (r == true) {
-                removeCurrentShape();
-                drawAll();
-            } else {
-                return;
-            }
+            removeCurrentShape();
+            drawAll();
         }
 
         settings.currentShape = undefined;
