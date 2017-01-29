@@ -27,7 +27,7 @@ class Circle extends Shape {
         context.moveTo(this.centerX + this.radiusX * Math.cos(0),
                        this.centerY + this.radiusY * Math.sin(0));
 
-        for(var a = step; a < pi2; a += step) {
+        for (var a = step; a < pi2; a += step) {
             context.lineTo(this.centerX + this.radiusX * Math.cos(a),
                            this.centerY + this.radiusY * Math.sin(a));
 
