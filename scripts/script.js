@@ -739,3 +739,10 @@ function getSingleTemplate(id) {
         drawAll();
     });
 }
+
+function setColor(hexColor) {
+    $("#colorpicker_border").spectrum({
+        color: hexColor
+    });
+    settings.nextPrimaryColor = hexColor;
+}
