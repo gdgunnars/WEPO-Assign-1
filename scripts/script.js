@@ -228,7 +228,7 @@ $('#button_export_JSON').on('click', function() {
     var text = JSON.stringify(drawing);
 
 
-    var blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+    var blob = new Blob([text], {type: "application/json;charset=utf-8"});
     saveAs(blob, "drawing.json");
 });
 
