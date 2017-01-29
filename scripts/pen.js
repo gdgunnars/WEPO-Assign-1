@@ -54,7 +54,7 @@ class Pen extends Shape {
             context.closePath();
         }
     }
-
+    
     move(offsetX, offsetY) {
         this.x += offsetX;
         this.y += offsetY;

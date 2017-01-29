@@ -42,8 +42,9 @@ $(document).ready(function() {
         id: 'font-select'
     });
 
-    var fonts = ["Arial", "Times New Roman", "Calibri", "Candara", "Tahoma",
-                "Comic Sans MS"];
+    var fonts = ["Arial", "Calibri", "Candara", "Times New Roman", "Verdana",
+                "Tahoma", "Comic Sans MS", "Trebuchet MS", "Impact"];
+
 
     for (var i = 0; i < fonts.length; i++) {
         select.append($('<option>', {
@@ -85,23 +86,18 @@ $(document).ready(function() {
 $('input[type=radio][name=tool]').on('change', function() {
     switch ($(this).val()) {
         case 'DrawTool':
-            console.log("Set tool to Draw");
             setTool("DrawTool");
             break;
         case 'MoveTool':
-            console.log("Set tool to Move");
             setTool("MoveTool");
             break;
         case 'EditTool':
-            console.log("Set tool to Edit");
             setTool("EditTool");
             break;
         case 'ColorTool':
-            console.log("Set tool to Color Change");
             setTool("ColorTool");
             break;
         case 'DeleteTool':
-            console.log("Set tool to Delete");
             setTool("DeleteTool");
             break;
     }
@@ -110,34 +106,24 @@ $('input[type=radio][name=tool]').on('change', function() {
 $('input[type=radio][name=shape]').on('change', function() {
     switch($(this).val()) {
         case 'Rectangle':
-            console.log("Set shape to Rectangle");
             setShape("Rectangle");
             break;
         case 'Pen':
-            console.log("Set shape to Pen");
             setShape("Pen");
             break;
         case 'Circle':
-            console.log("Set shape to Circle");
             setShape("Circle");
             break;
         case 'Line':
-            console.log("Set shape to Line");
             setShape("Line");
             break;
         case 'Text':
-            console.log("Set shape to Text");
             setShape("Text");
             break;
     }
 });
 
 $(document).keypress(function(e) {
-    if (e.keyCode === 107) {
-        console.log(settings.undo);
-        console.log(settings.redo);
-        console.log(settings.shapes);
-    }
     // Ctrl + Z
     if (e.keyCode === 26){
         undo();
@@ -148,52 +134,42 @@ $(document).keypress(function(e) {
     }
     if (e.keyCode === 68) {
         $("#deletetool").prop("checked", true);
-        console.log("Set tool to Delete");
         setTool("DeleteTool");
     }
     if (e.keyCode === 100) {
         $("#drawtool").prop("checked", true);
-        console.log("Set tool to Draw");
         setTool("DrawTool");
     }
     if (e.keyCode === 101) {
         $("#edittool").prop("checked", true);
-        console.log("Set tool to Edit");
         setTool("EditTool");
     }
     if (e.keyCode === 109) {
         $("#movetool").prop("checked", true);
-        console.log("Set tool to Move");
         setTool("MoveTool");
     }
     if (e.keyCode === 98) {
         $("#colortool").prop("checked", true);
-        console.log("Set tool to Color change");
         setTool("ColorTool");
     }
     if (e.keyCode === 112) {
         $("#pen").prop("checked", true);
-        console.log("Set shape to Pen");
         setShape("Pen");
     }
     if (e.keyCode === 108) {
         $("#line").prop("checked", true);
-        console.log("Set shape to Line");
         setShape("Line");
     }
     if (e.keyCode === 114) {
         $("#rect").prop("checked", true);
-        console.log("Set shape to Rectangle");
         setShape("Rectangle");
     }
     if (e.keyCode === 99) {
         $("#circle").prop("checked", true);
-        console.log("Set shape to Circle");
         setShape("Circle");
     }
     if (e.keyCode === 116) {
         $("#text").prop("checked", true);
-        console.log("Set shape to Text");
         setShape("Text");
     }
     if (e.keyCode === 82) {
@@ -204,10 +180,9 @@ $(document).keypress(function(e) {
 
 $('#button_clear').on('click', function() {
     var r = confirm("Press OK to clear the entire canvas.");
+
     if (r == true) {
         clearCanvas();
-    } else {
-        return;
     }
 });
 
@@ -252,7 +227,7 @@ $('#button_save_templ').on('click', function() {
     var title = prompt("Enter template name", "My template");
 
     if (settings.shapes.length == 0){
-        alert("You can't save an empty canvas");    
+        alert("You can't save an empty canvas");
     }
     else if (title != undefined) {
         var drawing = {
@@ -276,23 +251,12 @@ $('#button_save_templ').on('click', function() {
     }
 });
 
-$('#button_open').on('click', function() {
-    var url = "http://localhost:3000/api/drawings";
-    $.get(url, function(data, status){
-      for (var i = 0; i < data.length; i++){
-          console.log(data[i]['title']);
-      }
-    });
-});
-
 $('input[type=radio][name=fill]').on('change', function() {
     switch ($(this).val()) {
         case "Fill":
-            console.log("Set Fill");
             setFill("Fill");
             break;
         case "NoFill":
-            console.log("Set No Fill");
             setFill("NoFill");
             break;
     }
@@ -340,8 +304,6 @@ $("#colorpicker_border, #colorpicker_fill").spectrum({
         "rgb(12, 52, 61)", "rgb(28, 69, 135)", "rgb(7, 55, 99)", "rgb(32, 18, 77)", "rgb(76, 17, 48)"]
     ],
     change: function(color) {
-        //console.log(color.toHexString());
-        //console.log(this.id);
         setColor(color.toHexString(), this.id);
     }
 });
@@ -351,7 +313,6 @@ $("#mainCanvas").on("mousedown", function(e) {
 
     var shape = undefined;
     var context = settings.canvasObj.getContext("2d");
-
     var c = getRelativeCoords(e);
     var x = c.x;
     var y = c.y;
@@ -361,7 +322,6 @@ $("#mainCanvas").on("mousedown", function(e) {
     if (settings.currentTool !== "DrawTool") {
         setCurrentShapeToClicked(context, x, y);
         if (settings.currentTool === "MoveTool" && settings.chosenIndex !== undefined) {
-            console.log(settings.currentShape.x, settings.currentShape.y);
             settings.undo.push({
                 shape: {
                 x: settings.currentShape.x,
@@ -412,9 +372,6 @@ $("#mainCanvas").on("mousedown", function(e) {
             shape = new Text(x, y, settings.nextPrimaryColor, settings.nextSecondaryColor, settings.text, settings.type, settings.fontSize, settings.font);
             settings.shapes.push(shape);
         }
-        else if (settings.nextShape === "SprayCan") {
-            shape = new SprayCan(x, y, settings.nextPrimaryColor, settings.lineWidth, "SprayCan");
-        }
 
         settings.currentShape = shape;
         shape.draw(context);
@@ -424,14 +381,15 @@ $("#mainCanvas").on("mousedown", function(e) {
 $("#mainCanvas").on("mousemove", function(e) {
     var context = settings.canvasObj.getContext("2d");
     var rect = settings.canvasObj.getBoundingClientRect();
-
     var c = getRelativeCoords(e);
     var x = c.x;
     var y = c.y;
+    var offsetMX;
+    var offsetMY;
 
     if (settings.currentShape !== undefined && settings.currentTool === "MoveTool") {
-        var offsetMX = x - settings.lastMX;
-        var offsetMY = y - settings.lastMY;
+        offsetMX = x - settings.lastMX;
+        offsetMY = y - settings.lastMY;
         if(isNaN(offsetMX)) {
             offsetMX = 0;
         }
@@ -450,7 +408,6 @@ $("#mainCanvas").on("mousemove", function(e) {
     }
     else if (settings.currentShape !== undefined && settings.currentTool === "EditTool") {
         settings.currentShape.setEnd(x, y);
-        console.log(shapes);
         drawAll();
     }
 });
@@ -458,7 +415,6 @@ $("#mainCanvas").on("mousemove", function(e) {
 $("#mainCanvas").on("mouseup", function(e) {
     var context = settings.canvasObj.getContext("2d");
     var rect = settings.canvasObj.getBoundingClientRect();
-
     var c = getRelativeCoords(e);
     var x = c.x;
     var y = c.y;
@@ -477,11 +433,9 @@ $("#mainCanvas").on("mouseup", function(e) {
         }
         if (settings.currentTool === "ColorTool") {
             setCurrentShapeToClicked(context, x, y);
-            console.log(settings.currentShape);
             settings.currentShape.primaryColor = settings.nextPrimaryColor;
             settings.currentShape.secondaryColor = settings.nextSecondaryColor;
             settings.currentShape.fill = settings.fill;
-            console.log("Coloring");
             drawAll();
         }
         if (settings.currentTool === "DeleteTool") {
@@ -493,12 +447,7 @@ $("#mainCanvas").on("mouseup", function(e) {
                 return;
             }
         }
-        if (settings.currentTool === "MoveTool") {
-            console.log(settings.undo[settings.undo.length-1]['shape'].x,
-                        settings.undo[settings.undo.length-1]['shape'].y);
-        }
 
-        //console.log(settings.shapes);
         settings.currentShape = undefined;
     }
 });
@@ -662,6 +611,7 @@ function redo() {
 function drawAll() {
     var context = settings.canvasObj.getContext("2d");
     context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
+
     for (var i = 0; i < settings.shapes.length; i++) {
         settings.shapes[i].draw(context);
     }
@@ -686,6 +636,7 @@ function setCurrentShapeToClicked(context, x, y) {
     var dragging = false;
     var highestIndex = -1;
     settings.chosenIndex = undefined;
+
     for (var i = settings.shapes.length-1; i >= 0; i--) {
         if (hitTest(context, settings.shapes[i], x, y)) {
             settings.chosenIndex = i;
@@ -715,7 +666,8 @@ function hitTest(context, shape, mx, my) {
             endX = Math.max(x1, x2);
             endY = Math.max(y1, y2);
 
-            if ((mx >= startX-shape.lineWidth*0.5 && mx <= endX+shape.lineWidth*0.5) && (my >= startY-shape.lineWidth*0.5 && my <= endY+shape.lineWidth*0.5)) {
+            if ((mx >= startX-shape.lineWidth*0.5 && mx <= endX+shape.lineWidth*0.5)
+                && (my >= startY-shape.lineWidth*0.5 && my <= endY+shape.lineWidth*0.5)) {
                 return true;
             }
         }
@@ -780,7 +732,7 @@ function getSingleTemplate(id) {
     $.get(url, function(data, status){
         var items = data.content;
         for (var i = 0; i < items.length; i++) {
-            var func = eval(items[i].type); // Geri ráð fyrir að sérhvert object sé með property sem heitir "type"
+            var func = eval(items[i].type);
             items[i].__proto__ = func.prototype;
             settings.shapes.push(items[i]);
         }

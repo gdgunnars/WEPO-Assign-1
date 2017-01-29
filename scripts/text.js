@@ -10,9 +10,6 @@ class Text  {
         this.type = type;
         this.size = (size === undefined) ? "40px " : size;
         this.font = (font === undefined) ? this.size.concat("Courier New")  : this.size.concat(font);
-        console.log(size);
-        console.log(this.size);
-        console.log(this.font);
     }
 
     draw(context) {
