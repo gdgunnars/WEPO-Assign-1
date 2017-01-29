@@ -6,67 +6,66 @@
 	<title>s00per1337 paiNt</title>
 </head>
 <body>
-	<div class="container-left">
-		<div id="file_navigation">
-			<ul>
-				<li><a class="active" href="#home">New</a></li>
-				<li><a href="#open" id="button_open">Open</a></li>
-				<li><a href="#save" id="button_save">Save</a></li>
-				<li><a href="#about">About</a></li>
-			</ul>
+	<div class="container">
+		<div class="left">
+
 		</div>
-		<canvas id="mainCanvas" width="800px" height="600px">
-			Your browser does not support HTML5 Canvas.
-		</canvas>
-	</div>
-	<div class="container-right">
-		<button type="button" id="button_clear">Clear canvas</button> <br  />
-		<button type="button" id="button_undo">Undo</button>
-		<button type="button" id="button_redo">Redo</button> <br  />
-		Drawing Selection: <br />
-		<input type="radio" name="shape" id="pen" checked="checked" value="Pen">
-		<label for="pen"> Pen (p) </label><br />
-		<input type="radio" name="shape" id="line" value="Line">
-		<label for="line"> Line (l) </label><br />
-		<input type="radio" name="shape" id="rect"  value="Rectangle">
-		<label for="rect"> Rectangle (r) </label><br />
-		<input type="radio" name="shape" id="circle" value="Circle">
-		<label for="circle"> Circle (c) </label><br />
-		<input type="radio" name="shape" id="text" value="Text">
-		<label for="text"> Text Box (t) </label><br /> <br />
-		Tool Selection: <br />
-		<input type="radio" name="tool" id="drawtool" checked="checked" value="DrawTool">
-		<label for="drawtool"> Draw (d) </label><br />
-		<input type="radio" name="tool" id="movetool" value="MoveTool">
-		<label for="movetool"> Move (m) </label><br />
-		<input type="radio" name="tool" id="edittool" value="EditTool">
-		<label for="edittool"> Edit (e) </label><br />
-		<input type="radio" name="tool" id="colortool" value="ColorTool">
-		<label for="colortool"> Color change (b) </label><br />
-		<input type="radio" name="tool" id="deletetool" value="DeleteTool">
-		<label for="deletetool"> Delete (shift+d) </label><br /><br />
-		Fill shape: <br />
-		<input type="radio" name="fill" id="nofill" checked="checked" value="NoFill">
-		<label for="nofill"> No Fill / No Pen Glow </label><br />
-		<input type="radio" name="fill" id="fill" value="Fill">
-		<label for="fill"> Fill / Pen Glow </label><br /><br />
+		<div class="middle">
+			<div id="file_navigation">
+				<ul>
+					<li><a class="active" href="#home">New</a></li>
+					<li><a href="#open" id="button_open">Open</a></li>
+					<li><a href="#save" id="button_save">Save</a></li>
+					<li><a href="#about">About</a></li>
+				</ul>
+			</div>
+			<canvas id="mainCanvas" width="800px" height="600px">
+				Your browser does not support HTML5 Canvas.
+			</canvas>
+		</div>
+		<div class="right">
+			<button type="button" id="button_clear">Clear canvas</button> <br  />
+			<button type="button" id="button_undo">Undo</button>
+			<button type="button" id="button_redo">Redo</button> <br  />
+			Drawing Selection: <br />
+			<input type="radio" name="shape" id="pen" checked="checked" value="Pen">
+			<label for="pen"> Pen (p) </label><br />
+			<input type="radio" name="shape" id="line" value="Line">
+			<label for="line"> Line (l) </label><br />
+			<input type="radio" name="shape" id="rect"  value="Rectangle">
+			<label for="rect"> Rectangle (r) </label><br />
+			<input type="radio" name="shape" id="circle" value="Circle">
+			<label for="circle"> Circle (c) </label><br />
+			<input type="radio" name="shape" id="text" value="Text">
+			<label for="text"> Text Box (t) </label><br /> <br />
+			Tool Selection: <br />
+			<input type="radio" name="tool" id="drawtool" checked="checked" value="DrawTool">
+			<label for="drawtool"> Draw (d) </label><br />
+			<input type="radio" name="tool" id="movetool" value="MoveTool">
+			<label for="movetool"> Move (m) </label><br />
+			<input type="radio" name="tool" id="edittool" value="EditTool">
+			<label for="edittool"> Edit (e) </label><br />
+			<input type="radio" name="tool" id="colortool" value="ColorTool">
+			<label for="colortool"> Color change (b) </label><br />
+			<input type="radio" name="tool" id="deletetool" value="DeleteTool">
+			<label for="deletetool"> Delete (shift+d) </label><br /><br />
+			Fill shape: <br />
+			<input type="radio" name="fill" id="nofill" checked="checked" value="NoFill">
+			<label for="nofill"> No Fill / No Pen Glow </label><br />
+			<input type="radio" name="fill" id="fill" value="Fill">
+			<label for="fill"> Fill / Pen Glow </label><br /><br />
 
-		<input type='text' id="colorpicker_border"/>
-		Primary Color<br />
-		<input type='text' id="colorpicker_fill"/>
-		Secondary Color<br /><br />
+			<input type='text' id="colorpicker_border"/>
+			Primary Color<br />
+			<input type='text' id="colorpicker_fill"/>
+			Secondary Color<br /><br />
 
-		<div id="linewidth">Line Width: </div> <br />
-		Text tools: <br />
-		<div id="font">Font: </div>
-		<div id="fontsize">Font Size: </div>
+			<div id="linewidth">Line Width: </div> <br />
+			Text tools: <br />
+			<div id="font">Font: </div>
+			<div id="fontsize">Font Size: </div>
 
-
-
-
-
-
-
+		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="external/spectrum/spectrum.js"></script>

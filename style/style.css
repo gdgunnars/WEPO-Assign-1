@@ -1,7 +1,7 @@
 
 body {
-    /*background-color: #333;*/
-    margin-left: 10%;
+    /*background-color: #333;
+    margin-left: 10%;*/
 }
 
 #mainCanvas {
@@ -9,7 +9,7 @@ body {
    height: 75%;
    text-align:center;*/
    border:1px solid #000000;
-   position: absolute;
+   #position: absolute;
    /*left: 50%;*/
    margin-top: 10px;
    width: 800;
@@ -18,17 +18,27 @@ body {
 
 }
 
-.container-left{
-    width: 800px;
+.container {
+  display: flex;
+  #height: 300px; /* Or whatever */
 }
 
-.container-right{
-    width: 200px;
-    height: 600px;
-    margin-top: 10px;
-    margin-left: 810px;
-    border:1px solid black;
+.left {
+  width: 300px;  /* Or whatever */
+  height: inherit; /* Or whatever */
+  margin: 10px 5px 0 auto;  /* Magic! */
+  border:1px solid #000000;
+}
+.middle {
+    width: 800px;
+    margin: 10px 5px 0 5px;
+}
 
+.right {
+    width: 300px;  /* Or whatever */
+    height: inherit; /* Or whatever */
+    margin: 10px auto 0 5px;  /* Magic! */
+    border:1px solid #000000;
 }
 
 ul {
