@@ -607,7 +607,7 @@ function undo() {
             settings.shapes[item['index']].endY = item['shape'].endY;
         }
         else if (item['tool'] === "DeleteTool") {
-            settings.shapes.push(item['shape']);
+            settings.shapes.splice(item['index'], 0, item['shape']);
             settings.redo.push(item);
         }
     }
@@ -669,7 +669,7 @@ function redo() {
         }
         else if (item['tool'] === "DeleteTool") {
             settings.undo.push(item);
-            settings.shapes.pop();
+            settings.shapes.splice(item['index'], 1);
         }
     }
     drawAll();
@@ -713,7 +713,6 @@ function setCurrentShapeToClicked(context, x, y) {
         }
     }
 }
-
 
 function hitTest(context, shape, mx, my) {
     if (shape.type === "Circle") {
@@ -835,5 +834,4 @@ function setSpectrumColor(id, color) {
             "rgb(12, 52, 61)", "rgb(28, 69, 135)", "rgb(7, 55, 99)", "rgb(32, 18, 77)", "rgb(76, 17, 48)"]
         ]
     });
-
 }
