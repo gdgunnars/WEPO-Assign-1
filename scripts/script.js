@@ -8,7 +8,9 @@ var settings = {
     text: "",
     currentShape: undefined,
     shapes: [],
-    discarded: [],
+    undo: [],
+    redo: [],
+    chosenIndex: undefined,
     canvasWidth: 800,
     canvasHeight: 600,
     lineWidth: 1,
@@ -126,6 +128,11 @@ $('input[type=radio][name=shape]').on('change', function() {
 });
 
 $(document).keypress(function(e) {
+    if (e.keyCode === 107) {
+        console.log(settings.undo);
+        console.log(settings.redo);
+        console.log(settings.shapes);
+    }
     // Ctrl + Z
     if (e.keyCode === 26){
         undo();
@@ -313,6 +320,36 @@ $("#mainCanvas").on("mousedown", function(e) {
 
     if (settings.currentTool !== "DrawTool") {
         setCurrentShapeToClicked(context, x, y);
+        if (settings.currentTool === "MoveTool" && settings.chosenIndex !== undefined) {
+            console.log(settings.currentShape.x, settings.currentShape.y);
+            settings.undo.push({
+                shape: {
+                x: settings.currentShape.x,
+                y: settings.currentShape.y,
+                endX: settings.currentShape.endX,
+                endY: settings.currentShape.endY},
+                index: settings.chosenIndex,
+                tool: "MoveTool"
+            });
+        }
+        else if (settings.currentTool === "ColorTool" && settings.chosenIndex !== undefined) {
+            settings.undo.push({
+                shape: {
+                primaryColor: settings.currentShape.primaryColor,
+                secondaryColor: settings.currentShape.secondaryColor},
+                index: settings.chosenIndex,
+                tool: "ColorTool"
+            });
+        }
+        else if (settings.currentTool === "EditTool" && settings.chosenIndex !== undefined) {
+            settings.undo.push({
+                shape: {
+                endX: settings.currentShape.endX,
+                endY: settings.currentShape.endY},
+                index: settings.chosenIndex,
+                tool: "EditTool"
+            });
+        }
     }
     else {
         if (settings.nextShape === "Circle") {
@@ -387,9 +424,13 @@ $("#mainCanvas").on("mouseup", function(e) {
     var y = c.y;
 
     if (settings.currentShape !== undefined ) {
-
         if (settings.currentTool === "DrawTool") {
             settings.shapes.push(settings.currentShape);
+            settings.undo.push({
+                shape: settings.currentShape,
+                index: settings.shapes.length - 1,
+                tool: "DrawTool"
+            });
         }
         if (settings.currentTool === "DrawTool" || settings.currentTool === "EditTool") {
             settings.currentShape.setEnd(x, y);
@@ -412,8 +453,12 @@ $("#mainCanvas").on("mouseup", function(e) {
                 return;
             }
         }
+        if (settings.currentTool === "MoveTool") {
+            console.log(settings.undo[settings.undo.length-1]['shape'].x,
+                        settings.undo[settings.undo.length-1]['shape'].y);
+        }
 
-        console.log(settings.shapes);
+        //console.log(settings.shapes);
         settings.currentShape = undefined;
     }
 });
@@ -471,15 +516,105 @@ function clearCanvas() {
 }
 
 function undo() {
-    if(settings.shapes.length > 0) {
-        settings.discarded.push(settings.shapes.pop());
+    if(settings.undo.length > 0) {
+        var item = settings.undo.pop();
+        if (item['tool'] === "DrawTool") {
+            settings.redo.push(item);
+            settings.shapes.pop();
+        }
+        else if (item['tool'] === "MoveTool") {
+            settings.redo.push({
+                shape: {
+                x: settings.shapes[item['index']].x,
+                y: settings.shapes[item['index']].y,
+                endX: settings.shapes[item['index']].endX,
+                endY: settings.shapes[item['index']].endY},
+                index: item['index'],
+                tool: item['tool']
+            });
+            settings.shapes[item['index']].x = item['shape'].x;
+            settings.shapes[item['index']].y = item['shape'].y;
+            settings.shapes[item['index']].endX = item['shape'].endX;
+            settings.shapes[item['index']].endY = item['shape'].endY;
+        }
+        else if (item['tool'] === "ColorTool") {
+            settings.redo.push({
+                shape: {
+                primaryColor: settings.shapes[item['index']].primaryColor,
+                secondaryColor: settings.shapes[item['index']].secondaryColor},
+                index: item['index'],
+                tool: item['tool']
+            });
+            settings.shapes[item['index']].primaryColor = item['shape'].primaryColor;
+            settings.shapes[item['index']].secondaryColor = item['shape'].secondaryColor;
+        }
+        else if (item['tool'] === "EditTool") {
+            settings.redo.push({
+                shape: {
+                endX: settings.shapes[item['index']].endX,
+                endY: settings.shapes[item['index']].endY},
+                index: item['index'],
+                tool: item['tool']
+            });
+            settings.shapes[item['index']].endX = item['shape'].endX;
+            settings.shapes[item['index']].endY = item['shape'].endY;
+        }
+        else if (item['tool'] === "DeleteTool") {
+            settings.shapes.push(item['shape']);
+            settings.redo.push(item);
+        }
     }
     drawAll();
 }
 
 function redo() {
-    if(settings.discarded.length > 0){
-        settings.shapes.push(settings.discarded.pop());
+    if (settings.redo.length > 0) {
+        var item = settings.redo.pop();
+        if (item['tool'] === "DrawTool") {
+            settings.undo.push(item);
+            settings.shapes.push(item['shape']);
+        }
+        else if (item['tool'] === "MoveTool") {
+            settings.undo.push({
+                shape: {
+                    x: settings.shapes[item['index']].x,
+                    y: settings.shapes[item['index']].y,
+                    endX: settings.shapes[item['index']].endX,
+                    endY: settings.shapes[item['index']].endY},
+                index: item['index'],
+                tool: item['tool']
+            });
+            settings.shapes[item['index']].x = item['shape'].x;
+            settings.shapes[item['index']].y = item['shape'].y;
+            settings.shapes[item['index']].endX = item['shape'].endX;
+            settings.shapes[item['index']].endY = item['shape'].endY;
+        }
+        else if (item['tool'] === "ColorTool") {
+            settings.undo.push({
+                shape: {
+                primaryColor: settings.shapes[item['index']].primaryColor,
+                secondaryColor: settings.shapes[item['index']].secondaryColor},
+                index: item['index'],
+                tool: item['tool']
+            });
+            settings.shapes[item['index']].primaryColor = item['shape'].primaryColor;
+            settings.shapes[item['index']].secondaryColor = item['shape'].secondaryColor;
+        }
+        else if (item['tool'] === "EditTool") {
+            settings.undo.push({
+                shape: {
+                endX: settings.shapes[item['index']].endX,
+                endY: settings.shapes[item['index']].endY},
+                index: item['index'],
+                tool: item['tool']
+            });
+            settings.shapes[item['index']].endX = item['shape'].endX;
+            settings.shapes[item['index']].endY = item['shape'].endY;
+        }
+        else if (item['tool'] === "DeleteTool") {
+            settings.undo.push(item);
+            settings.shapes.pop();
+        }
     }
     drawAll();
 }
@@ -495,7 +630,12 @@ function drawAll() {
 function removeCurrentShape() {
     for (var i = settings.shapes.length-1; i >= 0; i--) {
         if (settings.shapes[i] === settings.currentShape) {
-            settings.discarded.push(settings.shapes[i]);
+            settings.undo.push({
+                shape: settings.shapes[i],
+                index: i,
+                tool: "DeleteTool"
+            });
+
             settings.shapes.splice(i, 1);
         }
     }
@@ -505,8 +645,10 @@ function setCurrentShapeToClicked(context, x, y) {
     // Find shape on highest layer that is under cursor.
     var dragging = false;
     var highestIndex = -1;
+    settings.chosenIndex = undefined;
     for (var i = settings.shapes.length-1; i >= 0; i--) {
         if (hitTest(context, settings.shapes[i], x, y)) {
+            settings.chosenIndex = i;
             dragging = true;
             settings.currentShape = settings.shapes[i];
             break;
