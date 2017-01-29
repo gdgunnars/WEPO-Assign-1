@@ -125,6 +125,11 @@ $('input[type=radio][name=shape]').on('change', function() {
 
 $(document).keypress(function(e) {
     if (!settings.inputtingText) {
+        if (e.keyCode === 107) {
+            console.log("shapes:", settings.shapes);
+            console.log("undo:", settings.undo);
+            console.log("redo:", settings.redo);
+        }
 
         // Ctrl + Z
         if (e.keyCode === 26){
@@ -326,10 +331,10 @@ $("#mainCanvas").on("mousedown", function(e) {
         if (settings.currentTool === "MoveTool" && settings.chosenIndex !== undefined) {
             settings.undo.push({
                 shape: {
-                x: settings.currentShape.x,
-                y: settings.currentShape.y,
-                endX: settings.currentShape.endX,
-                endY: settings.currentShape.endY},
+                    x: settings.currentShape.x,
+                    y: settings.currentShape.y,
+                    endX: settings.currentShape.endX,
+                    endY: settings.currentShape.endY},
                 index: settings.chosenIndex,
                 tool: "MoveTool"
             });
@@ -337,8 +342,9 @@ $("#mainCanvas").on("mousedown", function(e) {
         else if (settings.currentTool === "ColorTool" && settings.chosenIndex !== undefined) {
             settings.undo.push({
                 shape: {
-                primaryColor: settings.currentShape.primaryColor,
-                secondaryColor: settings.currentShape.secondaryColor},
+                    primaryColor: settings.currentShape.primaryColor,
+                    secondaryColor: settings.currentShape.secondaryColor,
+                    fill: settings.currentShape.fill},
                 index: settings.chosenIndex,
                 tool: "ColorTool"
             });
@@ -346,8 +352,8 @@ $("#mainCanvas").on("mousedown", function(e) {
         else if (settings.currentTool === "EditTool" && settings.chosenIndex !== undefined) {
             settings.undo.push({
                 shape: {
-                endX: settings.currentShape.endX,
-                endY: settings.currentShape.endY},
+                    endX: settings.currentShape.endX,
+                    endY: settings.currentShape.endY},
                 index: settings.chosenIndex,
                 tool: "EditTool"
             });
@@ -523,6 +529,8 @@ function setFill(fill) {
 function clearCanvas() {
     settings.discarded = settings.shapes.slice();
     settings.shapes = [];
+    settings.undo = [];
+    settings.redo = [];
     var context = settings.canvasObj.getContext("2d");
     context.clearRect(0, 0, settings.canvasObj.width, settings.canvasObj.height);
 }
@@ -530,6 +538,7 @@ function clearCanvas() {
 function undo() {
     if(settings.undo.length > 0) {
         var item = settings.undo.pop();
+
         if (item['tool'] === "DrawTool") {
             settings.redo.push(item);
             settings.shapes.pop();
@@ -537,34 +546,43 @@ function undo() {
         else if (item['tool'] === "MoveTool") {
             settings.redo.push({
                 shape: {
-                x: settings.shapes[item['index']].x,
-                y: settings.shapes[item['index']].y,
-                endX: settings.shapes[item['index']].endX,
-                endY: settings.shapes[item['index']].endY},
+                    x: settings.shapes[item['index']].x,
+                    y: settings.shapes[item['index']].y,
+                    endX: settings.shapes[item['index']].endX,
+                    endY: settings.shapes[item['index']].endY},
                 index: item['index'],
                 tool: item['tool']
             });
-            settings.shapes[item['index']].x = item['shape'].x;
-            settings.shapes[item['index']].y = item['shape'].y;
-            settings.shapes[item['index']].endX = item['shape'].endX;
-            settings.shapes[item['index']].endY = item['shape'].endY;
+            if (settings.shapes[item['index']].type === "Pen") {
+                var offsetX = item['shape'].x - settings.shapes[item['index']].x;
+                var offsetY = item['shape'].y - settings.shapes[item['index']].y;
+                settings.shapes[item['index']].move(offsetX, offsetY);
+            }
+            else {
+                settings.shapes[item['index']].x = item['shape'].x;
+                settings.shapes[item['index']].y = item['shape'].y;
+                settings.shapes[item['index']].endX = item['shape'].endX;
+                settings.shapes[item['index']].endY = item['shape'].endY;
+            }
         }
         else if (item['tool'] === "ColorTool") {
             settings.redo.push({
                 shape: {
-                primaryColor: settings.shapes[item['index']].primaryColor,
-                secondaryColor: settings.shapes[item['index']].secondaryColor},
+                    primaryColor: settings.shapes[item['index']].primaryColor,
+                    secondaryColor: settings.shapes[item['index']].secondaryColor,
+                    fill: settings.shapes[item['index']].fill},
                 index: item['index'],
                 tool: item['tool']
             });
             settings.shapes[item['index']].primaryColor = item['shape'].primaryColor;
             settings.shapes[item['index']].secondaryColor = item['shape'].secondaryColor;
+            settings.shapes[item['index']].fill = item['shape'].fill;
         }
         else if (item['tool'] === "EditTool") {
             settings.redo.push({
                 shape: {
-                endX: settings.shapes[item['index']].endX,
-                endY: settings.shapes[item['index']].endY},
+                    endX: settings.shapes[item['index']].endX,
+                    endY: settings.shapes[item['index']].endY},
                 index: item['index'],
                 tool: item['tool']
             });
@@ -596,27 +614,36 @@ function redo() {
                 index: item['index'],
                 tool: item['tool']
             });
-            settings.shapes[item['index']].x = item['shape'].x;
-            settings.shapes[item['index']].y = item['shape'].y;
-            settings.shapes[item['index']].endX = item['shape'].endX;
-            settings.shapes[item['index']].endY = item['shape'].endY;
+            if (settings.shapes[item['index']].type === "Pen") {
+                var offsetX = item['shape'].x - settings.shapes[item['index']].x;
+                var offsetY = item['shape'].y - settings.shapes[item['index']].y;
+                settings.shapes[item['index']].move(offsetX, offsetY);
+            }
+            else {
+                settings.shapes[item['index']].x = item['shape'].x;
+                settings.shapes[item['index']].y = item['shape'].y;
+                settings.shapes[item['index']].endX = item['shape'].endX;
+                settings.shapes[item['index']].endY = item['shape'].endY;
+            }
         }
         else if (item['tool'] === "ColorTool") {
             settings.undo.push({
                 shape: {
-                primaryColor: settings.shapes[item['index']].primaryColor,
-                secondaryColor: settings.shapes[item['index']].secondaryColor},
+                    primaryColor: settings.shapes[item['index']].primaryColor,
+                    secondaryColor: settings.shapes[item['index']].secondaryColor,
+                    fill: settings.shapes[item['index']].fill},
                 index: item['index'],
                 tool: item['tool']
             });
             settings.shapes[item['index']].primaryColor = item['shape'].primaryColor;
             settings.shapes[item['index']].secondaryColor = item['shape'].secondaryColor;
+            settings.shapes[item['index']].fill = item['shape'].fill;
         }
         else if (item['tool'] === "EditTool") {
             settings.undo.push({
                 shape: {
-                endX: settings.shapes[item['index']].endX,
-                endY: settings.shapes[item['index']].endY},
+                    endX: settings.shapes[item['index']].endX,
+                    endY: settings.shapes[item['index']].endY},
                 index: item['index'],
                 tool: item['tool']
             });
