@@ -223,7 +223,10 @@ $('#button_redo').on('click', function() {
 $('#button_save').on('click', function() {
     var title = prompt("Enter drawing name", "drawing");
 
-    if (title != undefined) {
+    if (settings.shapes.length == 0){
+        alert("You can't save an empty canvas");
+    }
+    else if (title != undefined) {
         var drawing = {
         title: title,
         content: settings.shapes
@@ -248,7 +251,10 @@ $('#button_save').on('click', function() {
 $('#button_save_templ').on('click', function() {
     var title = prompt("Enter template name", "My template");
 
-    if (title != undefined) {
+    if (settings.shapes.length == 0){
+        alert("You can't save an empty canvas");    
+    }
+    else if (title != undefined) {
         var drawing = {
         title: title,
         content: settings.shapes
