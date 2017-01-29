@@ -834,3 +834,43 @@ function setSpectrumColor(id, color) {
         ]
     });
 }
+
+function handleFileSelect()
+{
+  if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+    alert('The File APIs are not fully supported in this browser.');
+    return;
+  }
+
+  input = document.getElementById('fileinput');
+  if (!input) {
+    alert("Um, couldn't find the fileinput element.");
+  }
+  else if (!input.files) {
+    alert("This browser doesn't seem to support the `files` property of file inputs.");
+  }
+  else if (!input.files[0]) {
+    alert("Please select a file before clicking 'Load'");
+  }
+  else {
+    file = input.files[0];
+    fr = new FileReader();
+    fr.onload = receivedText;
+    fr.readAsText(file);
+    //fr.readAsDataURL(file);
+  }
+}
+
+function receivedText() {
+
+    var items = JSON.parse(fr.result);
+    clearCanvas();
+    for (var i = 0; i < items.length; i++) {
+        var func = eval(items[i].type); // Geri ráð fyrir að sérhvert object sé með property sem heitir "type"
+        items[i].__proto__ = func.prototype;
+        // Hér er hægt að taka viðeigandi item og setja það í arrayið sem við notum til að geyma öll shape-in í teikningunni
+        settings.shapes.push(items[i]);
+    }
+    drawAll();
+    $('#import').modal('hide');
+}
