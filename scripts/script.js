@@ -209,14 +209,11 @@ $('#button_export_PNG').on('click', function() {
 $('#button_export_JSON').on('click', function() {
     var canvas = settings.canvasObj;
     var ctx = canvas.getContext("2d");
-    var drawing = {
-    title: title,
-    content: settings.shapes
-    }
-
+    var drawing = settings.shapes;
     var text = JSON.stringify(drawing);
 
-    var blob = new Blob(text, {type: "text/plain;charset=utf-8"});
+
+    var blob = new Blob([text], {type: "text/plain;charset=utf-8"});
     saveAs(blob, "drawing.json");
 });
 
