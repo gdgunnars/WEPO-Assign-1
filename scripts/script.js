@@ -867,4 +867,5 @@ function receivedText() {
         settings.shapes.push(items[i]);
     }
     drawAll();
+    $('#import').modal('hide');
 }
