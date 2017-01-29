@@ -75,6 +75,8 @@ $(document).ready(function() {
         settings.fontSize = this.value;
     })
     $('select.fontsize').val("12px ");
+
+    fillPicNav();
 });
 
 $('input[type=radio][name=tool]').on('change', function() {
@@ -228,6 +230,7 @@ $('#button_save').on('click', function() {
             data: JSON.stringify(drawing),
             success: function (data) {
                 // The drawing was successfully saved
+                fillPicNav();
             },
             error: function (xhr, err) {
                 // The drawing could NOT be saved
@@ -410,7 +413,7 @@ $("#mainCanvas").on("mousemove", function(e) {
     }
     else if (settings.currentShape !== undefined && settings.currentTool === "EditTool") {
         settings.currentShape.setEnd(x, y);
-
+        console.log(shapes);
         drawAll();
     }
 });
@@ -692,4 +695,30 @@ function hitTest(context, shape, mx, my) {
 
         return ((mx >= startX && mx <= endX) && (my >= startY && my <= endY));
     }
+}
+
+function fillPicNav(obj) {
+    var url = "http://localhost:3000/api/drawings";
+    $("#pic_list").html("");
+    $.get(url, function(data, status){
+        for (var i = 0; i < data.length; i++){
+            $("#pic_list").append('<li><button type="button" class="btn btn-default" onclick="getSingleCanvas('+i+')">'+data[i]['title']+'</button></li>');
+        }
+    });
+}
+
+function getSingleCanvas(id) {
+    var url = "http://localhost:3000/api/drawings/"+id;
+    $.get(url, function(data, status){
+        clearCanvas();
+        var items = data.content;
+        for (var i = 0; i < items.length; i++) {
+            var func = eval(items[i].type); // Geri ráð fyrir að sérhvert object sé með property sem heitir "type"
+            items[i].__proto__ = func.prototype;
+            // Hér er hægt að taka viðeigandi item og setja það í arrayið sem við notum til að geyma öll shape-in í teikningunni
+            settings.shapes.push(items[i]);
+        }
+        drawAll();
+
+    });
 }

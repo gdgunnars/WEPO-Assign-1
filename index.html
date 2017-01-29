@@ -1,72 +1,120 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link href="style/bootstrap.min.css" rel="stylesheet" title="Default Style" />
 	<link href="style/style.css" rel="stylesheet" title="Default Style" />
 	<link rel='stylesheet' href="external/spectrum/spectrum.css" />
 	<title>s00per1337 paiNt</title>
 </head>
 <body>
-	<div class="container-left">
-		<div id="file_navigation">
-			<ul>
-				<li><a class="active" href="#home">New</a></li>
-				<li><a href="#open" id="button_open">Open</a></li>
-				<li><a href="#save" id="button_save">Save</a></li>
-				<li><a href="#about">About</a></li>
+	<div class="flex-container ">
+		<div class="left well">
+			<h4>Saved Pictures</h4>
+			<ul id="pic_list">
+
 			</ul>
 		</div>
-		<canvas id="mainCanvas" width="800px" height="600px">
-			Your browser does not support HTML5 Canvas.
-		</canvas>
-	</div>
-	<div class="container-right">
-		<button type="button" id="button_clear">Clear canvas</button> <br  />
-		<button type="button" id="button_undo">Undo</button>
-		<button type="button" id="button_redo">Redo</button> <br  />
-		Drawing Selection: <br />
-		<input type="radio" name="shape" id="pen" checked="checked" value="Pen">
-		<label for="pen"> Pen (p) </label><br />
-		<input type="radio" name="shape" id="line" value="Line">
-		<label for="line"> Line (l) </label><br />
-		<input type="radio" name="shape" id="rect"  value="Rectangle">
-		<label for="rect"> Rectangle (r) </label><br />
-		<input type="radio" name="shape" id="circle" value="Circle">
-		<label for="circle"> Circle (c) </label><br />
-		<input type="radio" name="shape" id="text" value="Text">
-		<label for="text"> Text Box (t) </label><br /> <br />
-		Tool Selection: <br />
-		<input type="radio" name="tool" id="drawtool" checked="checked" value="DrawTool">
-		<label for="drawtool"> Draw (d) </label><br />
-		<input type="radio" name="tool" id="movetool" value="MoveTool">
-		<label for="movetool"> Move (m) </label><br />
-		<input type="radio" name="tool" id="edittool" value="EditTool">
-		<label for="edittool"> Edit (e) </label><br />
-		<input type="radio" name="tool" id="colortool" value="ColorTool">
-		<label for="colortool"> Color change (b) </label><br />
-		<input type="radio" name="tool" id="deletetool" value="DeleteTool">
-		<label for="deletetool"> Delete (shift+d) </label><br /><br />
-		Fill shape: <br />
-		<input type="radio" name="fill" id="nofill" checked="checked" value="NoFill">
-		<label for="nofill"> No Fill / No Pen Glow </label><br />
-		<input type="radio" name="fill" id="fill" value="Fill">
-		<label for="fill"> Fill / Pen Glow </label><br /><br />
+		<div class="middle">
+			<nav class="navbar navbar-default">
+				<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse">
+						<ul class="nav navbar-nav">
+							<li><a href="#" id="button_open">Open</a></li>
+							<li><a href="#save" id="button_save">Save</a></li>
+							<li><a href="#">About</a></li>
+						</ul>
+						<div class="btn-group" role="group" aria-label="...">
+							<button type="button" class="btn btn-danger" id="button_clear">Clear canvas </button>
+							<button type="button" class="btn btn-info" id="button_undo">Undo (ctrl+z)</button>
+							<button type="button" class="btn btn-success" id="button_redo">Redo (ctrl+y)</button>
+						</div>
 
-		<input type='text' id="colorpicker_border"/>
-		Primary Color<br />
-		<input type='text' id="colorpicker_fill"/>
-		Secondary Color<br /><br />
+						<ul class="nav navbar-nav navbar-right">
+							<li><a class="navbar-brand" href="#">s00per1337 paiNt</a></li>
+						</ul>
 
-		<div id="linewidth">Line Width: </div> <br />
-		Text tools: <br />
-		<div id="font">Font: </div>
-		<div id="fontsize">Font Size: </div>
+			  		</div><!-- /.navbar-collapse -->
+				</div><!-- /.container-fluid -->
+			</nav>
+			<canvas id="mainCanvas" class="well" width="800px" height="600px">
+				Your browser does not support HTML5 Canvas.
+			</canvas>
+		</div>
+		<div class="right well">
 
+			Drawing Selection: <br />
+			<div class="funkyradio">
+		        <div class="funkyradio-success">
+		            <input type="radio" name="shape" checked="checked" id="pen" value="Pen" />
+		            <label for="pen">Pen (p)</label>
+		        </div>
+				<div class="funkyradio-success">
+		            <input type="radio" name="shape" id="line" value="Line" />
+		            <label for="line">Line (l)</label>
+		        </div>
+				<div class="funkyradio-success">
+		            <input type="radio" name="shape" id="rect"  value="Rectangle" />
+		            <label for="rect">Rectangle (r)</label>
+		        </div>
+				<div class="funkyradio-success">
+		            <input type="radio" name="shape" id="circle" value="Circle" />
+		            <label for="circle"> Circle (c)</label>
+		        </div>
+				<div class="funkyradio-success">
+		            <input type="radio" name="shape" id="text" value="Text" />
+		            <label for="text"> Text Box (t)</label>
+		        </div>
+			</div>
 
+			Tool Selection: <br />
+			<div class="funkyradio">
+		        <div class="funkyradio-info">
+		            <input type="radio" name="tool" id="drawtool" checked="checked" value="DrawTool" />
+		            <label for="drawtool"> Draw (d)</label>
+		        </div>
+				<div class="funkyradio-info">
+		            <input type="radio" name="tool" id="movetool" value="MoveTool" />
+		            <label for="movetool"> Move (m)</label>
+		        </div>
+				<div class="funkyradio-info">
+		            <input type="radio" name="tool" id="edittool" value="EditTool" />
+		            <label for="edittool"> Edit (e)</label>
+		        </div>
+				<div class="funkyradio-info">
+					<input type="radio" name="tool" id="colortool" value="ColorTool">
+					<label for="colortool"> Color change (b) </label><br />
+		        </div>
+				<div class="funkyradio-info">
+					<input type="radio" name="tool" id="deletetool" value="DeleteTool">
+					<label for="deletetool"> Delete (shift+d) </label>
+		        </div>
+			</div>
+			<br />
+			Fill shape: <br />
+			<div class="funkyradio">
+		        <div class="funkyradio-warning">
+					<input type="radio" name="fill" id="nofill" checked="checked" value="NoFill">
+					<label for="nofill"> No Fill / No Pen Glow </label>
+		        </div>
+				<div class="funkyradio-info">
+					<input type="radio" name="fill" id="fill" value="Fill">
+					<label for="fill"> Fill / Pen Glow </label>
+		        </div>
+			</div>
 
+			<input type='text' id="colorpicker_border"/>
+			Primary Color<br />
+			<input type='text' id="colorpicker_fill"/>
+			Secondary Color<br /><br />
 
+			<div id="linewidth">Line Width: </div> <br />
+			Text tools: <br />
+			<div id="font">Font: </div>
+			<div id="fontsize">Font Size: </div>
 
-
-
+		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="external/spectrum/spectrum.js"></script>
@@ -79,6 +127,7 @@
 	<script src="scripts/rectangle.js"></script>
 	<script src="scripts/text.js"></script>
 	<script src="scripts/spraycan.js"></script>
+	<script src="scripts/bootstrap.min.js"></script>
 </body>
 
 </html>
