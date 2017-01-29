@@ -79,6 +79,7 @@ $(document).ready(function() {
     $('select.fontsize').val("12px ");
 
     fillPicNav();
+    fillTemplNav();
 });
 
 $('input[type=radio][name=tool]').on('change', function() {
@@ -236,6 +237,31 @@ $('#button_save').on('click', function() {
             success: function (data) {
                 // The drawing was successfully saved
                 fillPicNav();
+            },
+            error: function (xhr, err) {
+                // The drawing could NOT be saved
+            }
+        });
+    }
+});
+
+$('#button_save_templ').on('click', function() {
+    var title = prompt("Enter template name", "My template");
+
+    if (title != undefined) {
+        var drawing = {
+        title: title,
+        content: settings.shapes
+        }
+        var url = "http://localhost:3000/api/templates";
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: url,
+            data: JSON.stringify(drawing),
+            success: function (data) {
+                // The drawing was successfully saved
+                fillTemplNav();
             },
             error: function (xhr, err) {
                 // The drawing could NOT be saved
@@ -702,7 +728,7 @@ function hitTest(context, shape, mx, my) {
     }
 }
 
-function fillPicNav(obj) {
+function fillPicNav() {
     var url = "http://localhost:3000/api/drawings";
     $("#pic_list").html("");
     $.get(url, function(data, status){
@@ -713,17 +739,45 @@ function fillPicNav(obj) {
 }
 
 function getSingleCanvas(id) {
-    var url = "http://localhost:3000/api/drawings/"+id;
+    var r = confirm("If you haven't saved, all your data will be lost.");
+    if (r == true) {
+        var url = "http://localhost:3000/api/drawings/"+id;
+        $.get(url, function(data, status){
+            clearCanvas();
+            var items = data.content;
+            for (var i = 0; i < items.length; i++) {
+                var func = eval(items[i].type); // Geri ráð fyrir að sérhvert object sé með property sem heitir "type"
+                items[i].__proto__ = func.prototype;
+                // Hér er hægt að taka viðeigandi item og setja það í arrayið sem við notum til að geyma öll shape-in í teikningunni
+                settings.shapes.push(items[i]);
+            }
+            drawAll();
+
+        });
+    } else {
+        return;
+    }
+}
+
+function fillTemplNav() {
+    var url = "http://localhost:3000/api/templates";
+    $("#templ_list").html("");
     $.get(url, function(data, status){
-        clearCanvas();
+        for( var i = 0; i < data.length; i++){
+            $("#templ_list").append('<li><button type="button" class="btn btn-default" onclick="getSingleTemplate('+i+')">'+data[i]['title']+'</button></li>');
+        }
+    });
+}
+
+function getSingleTemplate(id) {
+    var url = "http://localhost:3000/api/templates/"+id ;
+    $.get(url, function(data, status){
         var items = data.content;
         for (var i = 0; i < items.length; i++) {
             var func = eval(items[i].type); // Geri ráð fyrir að sérhvert object sé með property sem heitir "type"
             items[i].__proto__ = func.prototype;
-            // Hér er hægt að taka viðeigandi item og setja það í arrayið sem við notum til að geyma öll shape-in í teikningunni
             settings.shapes.push(items[i]);
         }
         drawAll();
-
     });
 }
