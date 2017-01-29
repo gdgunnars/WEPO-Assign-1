@@ -373,6 +373,7 @@ $("#mainCanvas").on("mousedown", function(e) {
             if (!settings.inputtingText) {
                 settings.inputtingText = true;
                 $('#text_input').css({"visibility": "visible", "left": e.pageX, "top": e.pageY});
+                $("#text_input").focus();
                 settings.textX = x;
                 settings.textY = y;
             }
