@@ -289,7 +289,7 @@ $('input[type=radio][name=fill]').on('change', function() {
     }
 })
 
-$("#colorpicker_border, #colorpicker_fill").spectrum({
+$("#colorpicker_primary, #colorpicker_secondary").spectrum({
     color: "#000",
     showInput: true,
     className: "full-spectrum",
@@ -534,11 +534,17 @@ function setWidth(lwidth) {
 }
 
 function setColor(color, id) {
-    if (id === "colorpicker_border"){
+    if (id === "colorpicker_primary"){
         settings.nextPrimaryColor = color;
+        $("#colorpicker_primary").spectrum({
+            color: color
+        });
     }
-    else if (id === "colorpicker_fill"){
+    else if (id === "colorpicker_secondary"){
         settings.nextSecondaryColor = color;
+        $("#colorpicker_secondary").spectrum({
+            color: color
+        });
     }
 }
 
@@ -808,11 +814,4 @@ function getSingleTemplate(id) {
         }
         drawAll();
     });
-}
-
-function setColor(hexColor) {
-    $("#colorpicker_border").spectrum({
-        color: hexColor
-    });
-    settings.nextPrimaryColor = hexColor;
 }
