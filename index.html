@@ -46,8 +46,15 @@
 						<ul class="nav navbar-nav">
 							<li><a href="" id="button_save">Save</a></li>
 							<li><a href="" id="button_save_templ">Save as Template</a></li>
-							<li><a href="" id="button_open">Import</a></li>
-							<li><a href="" id="button_open">Export</a></li>
+							<li><a href="#" id="button_open">Import</a></li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Export as <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="#" id="button_export_PNG">PNG</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="#" id="button_export_JSON">JSON</a></li>
+								</ul>
+							</li>
 							<li><a href="https://github.com/hlynurstef/WEPO-Assign-1/blob/master/README.md">About</a></li>
 						</ul>
 
@@ -66,9 +73,9 @@
 		<div class="right well">
 			<div class="col-md-12 ">
 				<div class="btn-group" role="group" aria-label="...">
-					<button type="button" class="btn btn-danger" id="button_clear"><i class="fa fa-retweet" aria-hidden="true"></i> (shift+r) </button>
-					<button type="button" class="btn btn-info" id="button_undo"><i class="fa fa-undo" aria-hidden="true"></i> (ctrl+z)</button>
-					<button type="button" class="btn btn-success" id="button_redo"><i class="fa fa-repeat" aria-hidden="true"></i> (ctrl+y)</button>
+					<button title="Clear Canvas" type="button" class="btn btn-danger" id="button_clear"><i class="fa fa-retweet" aria-hidden="true"></i> (shift+r) </button>
+					<button title="Undo" type="button" class="btn btn-info" id="button_undo"><i class="fa fa-undo" aria-hidden="true"></i> (ctrl+z)</button>
+					<button title="Redo" type="button" class="btn btn-success" id="button_redo"><i class="fa fa-repeat" aria-hidden="true"></i> (ctrl+y)</button>
 				</div>
 			</div>
 			<br>
@@ -77,23 +84,23 @@
 				<div class="funkyradio" id="drawing">
 					<div class="funkyradio-success">
 						<input type="radio" name="shape" checked="checked" id="pen" value="Pen" />
-						<label for="pen"><i class="fa fa-pencil" aria-hidden="true"></i> (p)</label>
+						<label title="Pen" for="pen"><i class="fa fa-pencil" aria-hidden="true"></i> (p)</label>
 					</div>
 					<div class="funkyradio-success">
 						<input type="radio" name="shape" id="line" value="Line" />
-						<label for="line"><i class="fa fa-minus"></i> (l)</label>
+						<label title="Line" for="line"><i class="fa fa-minus"></i> (l)</label>
 					</div>
 					<div class="funkyradio-success">
 						<input type="radio" name="shape" id="rect"  value="Rectangle" />
-						<label for="rect"><i class="fa fa-square-o" aria-hidden="true"></i> (r)</label>
+						<label title="Rectangle" for="rect"><i class="fa fa-square-o" aria-hidden="true"></i> (r)</label>
 					</div>
 					<div class="funkyradio-success">
 						<input type="radio" name="shape" id="circle" value="Circle" />
-						<label for="circle"><i class="fa fa-circle-o" aria-hidden="true"></i> (c)</label>
+						<label title="Ellipse" for="circle"><i class="fa fa-circle-o" aria-hidden="true"></i> (c)</label>
 					</div>
 					<div class="funkyradio-success">
 						<input type="radio" name="shape" id="text" value="Text" />
-						<label for="text"><i class="fa fa-text-width" aria-hidden="true"></i> (t)</label>
+						<label title="Text" for="text"><i class="fa fa-text-width" aria-hidden="true"></i> (t)</label>
 					</div>
 				</div>
 			</div>
@@ -102,23 +109,23 @@
 				<div class="funkyradio">
 			        <div class="funkyradio-info">
 			            <input type="radio" name="tool" id="drawtool" checked="checked" value="DrawTool" />
-			            <label for="drawtool"><i class="fa fa-paint-brush" aria-hidden="true"></i>	 (d)</label>
+			            <label title="Draw Tool" for="drawtool"><i class="fa fa-paint-brush" aria-hidden="true"></i>	 (d)</label>
 			        </div>
 					<div class="funkyradio-info">
 			            <input type="radio" name="tool" id="movetool" value="MoveTool" />
-			            <label for="movetool"><i class="fa fa-arrows" aria-hidden="true"></i> (m)</label>
+			            <label title="Move Tool" for="movetool"><i class="fa fa-arrows" aria-hidden="true"></i> (m)</label>
 			        </div>
 					<div class="funkyradio-info">
 			            <input type="radio" name="tool" id="edittool" value="EditTool" />
-			            <label for="edittool"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> (e)</label>
+			            <label title="Edit Tool" for="edittool"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> (e)</label>
 			        </div>
 					<div class="funkyradio-info">
 						<input type="radio" name="tool" id="colortool" value="ColorTool">
-						<label for="colortool"></i>(b) </label><br />
+						<label title="Color Tool" for="colortool"><img src="images/paint_bucket2.png" alt="paintbucket" /> (b) </label><br />
 			        </div>
 					<div class="funkyradio-info">
 						<input type="radio" name="tool" id="deletetool" value="DeleteTool">
-						<label for="deletetool"><i class="fa fa-eraser" aria-hidden="true"></i>  (shift+d) </label>
+						<label title="Delete Tool" for="deletetool"><i class="fa fa-eraser" aria-hidden="true"></i>  (shift+d) </label>
 			        </div>
 				</div>
 			</div>
@@ -138,6 +145,15 @@
 				</div>
 			</div>
 			<div class="col-md-12">
+				<div class="btn-group" role="group" aria-label="...">
+					<button title="Black" type="button" class="btn btn-black btn-strech" onclick="setColor('#000')"></button>
+					<button title="Red" type="button" class="btn btn-danger btn-strech" onclick="setColor('#d9534f')"></button>
+					<button title="Light Blue" type="button" class="btn btn-info btn-strech" onclick="setColor('#5bc0de')"></button>
+					<button title="Green" type="button" class="btn btn-success btn-strech" onclick="setColor('#5cb85c')"></button>
+					<button title="Orange" type="button" class="btn btn-warning btn-strech" onclick="setColor('#f0ad4e')"></button>
+					<button title="White" type="button" class="btn btn-default btn-strech" onclick="setColor('#ffffff')"></button>
+					<button title="Blue" type="button" class="btn btn-primary btn-strech" onclick="setColor('#337ab7')"></button>
+				</div><br>
 				<input type='text' id="colorpicker_border"/>
 				<label for="colorpicker_border">Primary Color</label> &nbsp;
 				<input type='text' id="colorpicker_fill"/>
@@ -155,6 +171,7 @@
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="external/spectrum/spectrum.js"></script>
+	<script src="external/filesaver/FileSaver.min.js"></script>
 	<script src="scripts/script.js"></script>
 	<script src="scripts/shape.js"></script>
 	<script src="scripts/circle.js"></script>
