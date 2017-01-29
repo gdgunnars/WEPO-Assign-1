@@ -20,7 +20,7 @@ var settings = {
 
 $(document).ready(function() {
     var select = $("<select></select>", {
-        class: 'line-width'
+        class: 'line-width form-control'
     });
 
     for (var i = 1; i <= 20; i++) {
@@ -36,7 +36,8 @@ $(document).ready(function() {
     });
 
     select = $("<select></select>", {
-        class: 'font'
+        class: 'font form-control',
+        id: 'font-select'
     });
 
     var fonts = ["Arial", "Times New Roman", "Calibri", "Candara", "Tahoma",
@@ -55,7 +56,8 @@ $(document).ready(function() {
     })
 
     select = $("<select></select>", {
-        class: 'fontsize'
+        class: 'fontsize form-control',
+        id: 'fontsize-select'
     });
 
     var sizes = ["8", "9", "10", "11", "12",
@@ -185,6 +187,9 @@ $(document).keypress(function(e) {
         $("#text").prop("checked", true);
         console.log("Set shape to Text");
         setShape("Text");
+    }
+    if (e.keyCode === 82) {
+        $("#button_clear").trigger("click");
     }
 
 });
