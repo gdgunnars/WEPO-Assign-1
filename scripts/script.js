@@ -401,6 +401,11 @@ $("#mainCanvas").on("mousedown", function(e) {
                     shape = new Text(settings.textX, settings.textY, settings.nextPrimaryColor, settings.nextSecondaryColor,
                                     text, "Text", settings.fontSize, settings.font, context);
                     settings.shapes.push(shape);
+                    settings.undo.push({
+                        shape: shape,
+                        index: settings.shapes.length - 1,
+                        tool: "DrawTool"
+                    });
                 }
                 $('#text_input').val('');
             }

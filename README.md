@@ -3,9 +3,8 @@ Vefforritun 2 - Programming assignment 1
 
 
 ## Known bugs
-Opening exported png images in some tools shows a black background,
-opening them in paint or other image editing toolsshows the image as
-it was when exported from canvas.
+Undo/Redo keyboard shortcuts (ctrl+z and ctrl+y) are a bit wonky after
+entering text, but the buttons on the page should work as intended.
 
 ### Dependencies
 FileSaver.js
