@@ -1,8 +1,7 @@
 #mainCanvas {
 
    #border:1px solid #000000;
-   margin-top: 10px;
-   width: 800;
+   width: 800px;
    height: 600px;
    background-color: #FFF;
    align-self: flex-end;
@@ -14,7 +13,7 @@
 }
 
 .left {
-    width: 300px;  /* Or whatever */
+    width: 200px;  /* Or whatever */
     height: inherit; /* Or whatever */
     margin: 10px 5px 0 auto;  /* Magic! */
     #border:1px solid #000000;
@@ -25,7 +24,7 @@
 }
 
 .right {
-    width: 300px;  /* Or whatever */
+    width: 400px;  /* Or whatever */
     height: inherit; /* Or whatever */
     margin: 10px auto 0 5px;  /* Magic! */
     #border:1px solid #000000;
@@ -42,14 +41,35 @@
     width: 100%;
 }
 
+.fa {
+    display: inline;
+    margin-right: 4px;
+}
+
+.sp-replacer {
+    border-radius: 3px;
+}
+
+.zero-padding {
+    padding: 0;
+}
+
+#linewidth {
+    margin-bottom: 10px;
+}
+
+.well {
+    margin-bottom: 0;
+}
+
 /* CSS Code for radio buttons was found on bootsnipp.com free to use*/
+/* Some elements have been changed, but mostly the same */
 @import('https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.0/css/bootstrap.min.css') .funkyradio div {
     clear: both;
     /*margin: 0 50px;*/
     overflow: hidden;
 }
 .funkyradio label {
-    /*min-width: 400px;*/
     width: 100%;
     border-radius: 3px;
     border: 1px solid #D1D3D4;
@@ -62,7 +82,6 @@
     position: relative;
     line-height: 2.5em;
     text-indent: 3.25em;
-    #margin-top: 2em;
     cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;

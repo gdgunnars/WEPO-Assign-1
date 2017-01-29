@@ -2,8 +2,8 @@ class Text  extends Shape {
     constructor(x, y, primaryColor, secondaryColor, text, type, size, font, context) {
         super(x, y, primaryColor, secondaryColor, undefined, type);
         this.text = text.split('\n');
-        this.size = (size === undefined) ? "12px " : size;
-        this.font = (font === undefined) ? this.size.concat("Courier New") : this.size.concat(font);
+        this.size = size;
+        this.font = this.size.concat(font);
         this.width = this.maxWidth(context);
         this.y -= parseInt(this.size);
         this.endX = this.x + this.width;
